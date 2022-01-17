@@ -1,0 +1,13 @@
+@startuml
+component Cluster {
+    skinparam BackgroundColor transparent
+    skinparam componentStyle uml2
+    component Service {
+        component "Task Definition" {
+            component "Container Definition" {
+
+            }
+        }
+    }
+}
+@enduml
