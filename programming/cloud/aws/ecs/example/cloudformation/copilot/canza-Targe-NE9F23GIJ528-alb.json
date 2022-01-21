@@ -1,0 +1,28 @@
+{
+    "TargetGroups": [
+        {
+            "TargetGroupArn": "arn:aws:elasticloadbalancing:us-west-2:091153021562:targetgroup/canza-Targe-NE9F23GIJ528/7a42c3b8050c86d9",
+            "TargetGroupName": "canza-Targe-NE9F23GIJ528",
+            "Protocol": "HTTP",
+            "Port": 8081,
+            "VpcId": "vpc-031d69262bbb6a9c2",
+            "HealthCheckProtocol": "HTTP",
+            "HealthCheckPort": "traffic-port",
+            "HealthCheckEnabled": true,
+            "HealthCheckIntervalSeconds": 30,
+            "HealthCheckTimeoutSeconds": 5,
+            "HealthyThresholdCount": 5,
+            "UnhealthyThresholdCount": 2,
+            "HealthCheckPath": "/",
+            "Matcher": {
+                "HttpCode": "200"
+            },
+            "LoadBalancerArns": [
+                "arn:aws:elasticloadbalancing:us-west-2:091153021562:loadbalancer/app/canza-Publi-1LAMHNMMFSWD4/41392c29016d94aa"
+            ],
+            "TargetType": "ip",
+            "ProtocolVersion": "HTTP1",
+            "IpAddressType": "ipv4"
+        }
+    ]
+}

@@ -1,0 +1,409 @@
+"Description" : "Jbb on ECS: Create a Jbb stack using Elastic Container Service"
+
+Parameters: 
+
+    VPC:
+        Description: The VPC that the ECS cluster is deployed to
+        Type: AWS::EC2::VPC::Id
+ 
+    PublicSubnetOne:
+        Type: AWS::EC2::Subnet::Id
+        Description: First Public Subnet
+
+    PublicSubnetTwo:
+        Type: AWS::EC2::Subnet::Id
+        Description: Second Public Subnet
+
+    Domain:
+        Description: An arbitrary internal domain name for the application (only required for internal service discovery - default is jbb.local). It must be unique across multiple deploymemts.
+        Type: String
+        Default: "jbb.local"
+
+    CountOfUiTasks:
+        Description: The number of tasks to be instantiated for the UI service  
+        Type: Number
+        Default: 2
+
+    CountOfAppserverTasks:
+        Description: The number of tasks to be instantiated for the Application service  
+        Type: Number
+        Default: 3
+
+    LaunchType:
+        Description: Please provide the LaunchType
+        Type: String
+        Default: EC2
+        AllowedValues:
+               - EC2
+               - FARGATE
+
+    PublicIP:
+        Description: Please provide IP connectivity option
+        Type: String
+        Default: DISABLED
+        AllowedValues:
+               - ENABLED
+               - DISABLED
+
+               
+Resources:
+    ClusterJbb:
+      Type: 'AWS::ECS::Cluster'
+      Properties:
+        ClusterName: jbb-cluster
+        Configuration:
+          ExecuteCommandConfiguration:
+              Logging: DEFAULT
+
+    ServiceJbbDb: 
+        Type: AWS::ECS::Service
+        Properties: 
+            LaunchType: !Ref LaunchType
+            Cluster: !Ref ClusterJbb
+            DesiredCount: 1
+            ServiceRegistries:
+                - RegistryArn: !GetAtt JbbDbServiceDiscoveryEntry.Arn
+            TaskDefinition: !Ref 'TaskDefinitionJbbDb'
+            NetworkConfiguration:
+                AwsvpcConfiguration:
+                    AssignPublicIp: !Ref PublicIP
+                    Subnets: [ !Ref 'PublicSubnetOne' , !Ref 'PublicSubnetTwo' ]
+                    SecurityGroups: [!Ref 'JbbDbSecurityGroup' ]
+
+    TaskDefinitionJbbDb:
+        Type: AWS::ECS::TaskDefinition
+        Properties:
+            Family: jbb-db
+            NetworkMode: awsvpc
+            RequiresCompatibilities:
+                - FARGATE
+            ExecutionRoleArn: !Ref 'JbbECSTaskExecutionRole'
+            Cpu: 256
+            Memory: 512
+            ContainerDefinitions:
+                - Name: jbb-db
+                  Essential: true
+                  Image: mreferre/jbb-db:0.5
+                  LogConfiguration:
+                    LogDriver: awslogs
+                    Options:
+                        awslogs-group: !Ref AWS::StackName
+                        awslogs-region: !Ref AWS::Region
+                        awslogs-stream-prefix: "jbb"
+
+    ServiceRedisServer: 
+        Type: AWS::ECS::Service
+        Properties: 
+            LaunchType: !Ref LaunchType
+            Cluster: !Ref ClusterJbb
+            DesiredCount: 1
+            ServiceRegistries:
+                - RegistryArn: !GetAtt JbbRedisServerServiceDiscoveryEntry.Arn
+            TaskDefinition: !Ref 'TaskDefinitionRedisServer'
+            NetworkConfiguration:
+                AwsvpcConfiguration:
+                    AssignPublicIp: !Ref PublicIP
+                    Subnets: [ !Ref 'PublicSubnetOne' , !Ref 'PublicSubnetTwo'  ]
+                    SecurityGroups: [!Ref 'JbbRedisServerSecurityGroup' ]
+
+    TaskDefinitionRedisServer:
+        Type: AWS::ECS::TaskDefinition
+        Properties:
+            Family: redis-server
+            NetworkMode: awsvpc
+            RequiresCompatibilities:
+                - EC2
+            ExecutionRoleArn: !Ref 'JbbECSTaskExecutionRole'
+            Cpu: 256
+            Memory: 512
+            ContainerDefinitions:
+                - Name: redis-server
+                  Essential: true
+                  Image: redis:4.0.2
+                  LogConfiguration:
+                    LogDriver: awslogs
+                    Options:
+                        awslogs-group: !Ref AWS::StackName
+                        awslogs-region: !Ref AWS::Region
+                        awslogs-stream-prefix: "jbb"
+
+    ServiceJbbAppserver: 
+        Type: AWS::ECS::Service
+        Properties: 
+            LaunchType: !Ref LaunchType
+            Cluster: !Ref ClusterJbb
+            DesiredCount: !Ref CountOfAppserverTasks
+            ServiceRegistries:
+                - RegistryArn: !GetAtt JbbAppserverServiceDiscoveryEntry.Arn
+            TaskDefinition: !Ref 'TaskDefinitionJbbAppserver'
+            NetworkConfiguration:
+                AwsvpcConfiguration:
+                    AssignPublicIp: !Ref PublicIP
+                    Subnets: [ !Ref 'PublicSubnetOne' , !Ref 'PublicSubnetTwo'  ]
+                    SecurityGroups: [!Ref 'JbbAppserverSecurityGroup' ]
+
+    TaskDefinitionJbbAppserver:
+        Type: AWS::ECS::TaskDefinition
+        Properties:
+            Family: jbb-appserver
+            NetworkMode: awsvpc
+            RequiresCompatibilities:
+                - FARGATE
+            ExecutionRoleArn: !Ref 'JbbECSTaskExecutionRole'
+            Cpu: 256
+            Memory: 512
+            ContainerDefinitions:
+                - Name: jbb-appserver
+                  Essential: true
+                  Image: mreferre/jbb-appserver:0.5
+                  Environment: 
+                    - Name: SEARCH_DOMAIN
+                      Value: !Ref 'Domain' 
+                  LogConfiguration:
+                    LogDriver: awslogs
+                    Options:
+                        awslogs-group: !Ref AWS::StackName
+                        awslogs-region: !Ref AWS::Region
+                        awslogs-stream-prefix: "jbb"
+
+    ServiceJbbUi: 
+        Type: AWS::ECS::Service
+        DependsOn: JbbLoadBalancerListener
+        Properties: 
+            LaunchType: !Ref LaunchType
+            Cluster: !Ref ClusterJbb
+            DesiredCount: !Ref CountOfUiTasks
+            ServiceRegistries:
+                - RegistryArn: !GetAtt JbbUiServiceDiscoveryEntry.Arn
+            TaskDefinition: !Ref 'TaskDefinitionJbbUi'
+            LoadBalancers:
+                - ContainerName: 'jbb-ui'
+                  ContainerPort: 80
+                  TargetGroupArn: !Ref JbbTargetGroup
+            NetworkConfiguration:
+                AwsvpcConfiguration:
+                    AssignPublicIp: !Ref PublicIP
+                    Subnets: [ !Ref 'PublicSubnetOne' , !Ref 'PublicSubnetTwo'  ]
+                    SecurityGroups: [!Ref 'JbbUiSecurityGroup' ]
+
+    TaskDefinitionJbbUi:
+        Type: AWS::ECS::TaskDefinition
+        Properties:
+            Family: jbb-ui
+            NetworkMode: awsvpc
+            RequiresCompatibilities:
+                - FARGATE
+            ExecutionRoleArn: !Ref 'JbbECSTaskExecutionRole'
+            Cpu: 256
+            Memory: 512
+            ContainerDefinitions:
+                - Name: jbb-ui
+                  Essential: true
+                  Image: mreferre/jbb-ui:0.7
+                  Environment: 
+                    - Name: SEARCH_DOMAIN
+                      Value: !Ref 'Domain' 
+                  PortMappings:
+                    - ContainerPort: 80
+                  LogConfiguration:
+                    LogDriver: awslogs
+                    Options:
+                        awslogs-group: !Ref AWS::StackName
+                        awslogs-region: !Ref AWS::Region
+                        awslogs-stream-prefix: "jbb"
+
+    CloudWatchLogsGroup:
+        Type: AWS::Logs::LogGroup
+        Properties: 
+            LogGroupName: !Ref AWS::StackName
+            RetentionInDays: 365  
+   
+    # This is a role which is used by the ECS tasks themselves.
+    JbbECSTaskExecutionRole:
+        Type: AWS::IAM::Role
+        Properties:
+            AssumeRolePolicyDocument:
+                Statement:
+                - Effect: Allow
+                  Principal:
+                     Service: [ecs-tasks.amazonaws.com]
+                  Action: ['sts:AssumeRole']
+            Path: /
+            Policies:
+                - PolicyName: AmazonECSTaskExecutionRolePolicy
+                  PolicyDocument:
+                    Statement:
+                        - Effect: Allow
+                          Action:
+                            # Allow the ECS Tasks to download images from ECR
+                            - 'ecr:GetAuthorizationToken'
+                            - 'ecr:BatchCheckLayerAvailability'
+                            - 'ecr:GetDownloadUrlForLayer'
+                            - 'ecr:BatchGetImage'
+
+                            # Allow the ECS tasks to upload logs to CloudWatch
+                            - 'logs:CreateLogStream'
+                            - 'logs:PutLogEvents'
+
+                            # Allow the ECS tasks to register into the target group
+                            - 'elasticloadbalancing:DeregisterInstancesFromLoadBalancer'
+                            - 'elasticloadbalancing:Describe*'
+                            - 'elasticloadbalancing:RegisterInstancesWithLoadBalancer'
+                            - 'elasticloadbalancing:DeregisterTargets'
+                            - 'elasticloadbalancing:DescribeTargetGroups'
+                            - 'elasticloadbalancing:DescribeTargetHealth'
+                            - 'elasticloadbalancing:RegisterTargets'
+                          Resource: '*'
+
+    JbbServiceDiscoveryNameSpace:
+        Type: AWS::ServiceDiscovery::PrivateDnsNamespace
+        Properties:
+            Description: "Service Discovery Namespace for Jbb"
+            Vpc: !Ref 'VPC'
+            Name: !Ref 'Domain'
+
+    JbbDbServiceDiscoveryEntry:
+        Type: AWS::ServiceDiscovery::Service
+        Properties:
+            Name: jbb-db
+            DnsConfig:
+                DnsRecords: 
+                    - Type: A
+                      TTL: "10"
+                NamespaceId: !Ref 'JbbServiceDiscoveryNameSpace'
+            HealthCheckCustomConfig:
+                FailureThreshold: '1'
+
+    JbbRedisServerServiceDiscoveryEntry:
+        Type: AWS::ServiceDiscovery::Service
+        Properties:
+            Name: redis-server
+            DnsConfig:
+                DnsRecords: 
+                    - Type: A
+                      TTL: "10"
+                NamespaceId: !Ref 'JbbServiceDiscoveryNameSpace'
+            HealthCheckCustomConfig:
+                FailureThreshold: '1'
+
+    JbbAppserverServiceDiscoveryEntry:
+        Type: AWS::ServiceDiscovery::Service
+        Properties:
+            Name: jbb-appserver
+            DnsConfig:
+                DnsRecords: 
+                    - Type: A
+                      TTL: "10"
+                NamespaceId: !Ref 'JbbServiceDiscoveryNameSpace'
+            HealthCheckCustomConfig:
+                FailureThreshold: '1'
+
+    JbbUiServiceDiscoveryEntry:
+        Type: AWS::ServiceDiscovery::Service
+        Properties:
+            Name: jbb-ui
+            DnsConfig:
+                DnsRecords: 
+                    - Type: A
+                      TTL: "10"
+                NamespaceId: !Ref 'JbbServiceDiscoveryNameSpace'
+            HealthCheckCustomConfig:
+                FailureThreshold: '1'
+
+    JbbDbSecurityGroup:
+        Type: AWS::EC2::SecurityGroup
+        Properties:
+            GroupDescription: yealb-db security group
+            SecurityGroupIngress:
+            - SourceSecurityGroupId: !Ref JbbAppserverSecurityGroup
+              IpProtocol: tcp
+              ToPort: 5432
+              FromPort: 5432
+            VpcId: !Ref 'VPC'
+
+
+    JbbRedisServerSecurityGroup:
+        Type: AWS::EC2::SecurityGroup
+        Properties:
+            GroupDescription: redis-server security group
+            SecurityGroupIngress:
+            - SourceSecurityGroupId: !Ref JbbAppserverSecurityGroup
+              IpProtocol: tcp
+              ToPort: 6379
+              FromPort: 6379
+            VpcId: !Ref 'VPC'
+
+    JbbAppserverSecurityGroup:
+        Type: AWS::EC2::SecurityGroup
+        Properties:
+            GroupDescription: yealb-appserver security group
+            SecurityGroupIngress:
+            - CidrIp: '0.0.0.0/0'
+              IpProtocol: tcp
+              ToPort: 4567
+              FromPort: 4567
+            VpcId: !Ref 'VPC'
+
+    JbbUiSecurityGroup:
+        Type: AWS::EC2::SecurityGroup
+        Properties:
+            GroupDescription: yealb-ui security group
+            SecurityGroupIngress:
+            - CidrIp: '0.0.0.0/0'
+              IpProtocol: tcp
+              ToPort: 80
+              FromPort: 80
+            VpcId: !Ref 'VPC'
+
+    JbbLBSecurityGroup:
+        Type: AWS::EC2::SecurityGroup
+        Properties:
+            GroupDescription: yealb load balancer security group
+            SecurityGroupIngress:
+            - CidrIp: '0.0.0.0/0'
+              IpProtocol: tcp
+              ToPort: 80
+              FromPort: 80
+            VpcId: !Ref 'VPC'
+
+    JbbLoadBalancer:
+      Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+      Properties:
+        Scheme: internet-facing
+        Subnets: [ !Ref 'PublicSubnetOne' , !Ref 'PublicSubnetTwo' ]
+        SecurityGroups: [ !Ref JbbLBSecurityGroup ]
+
+    JbbLoadBalancerListener:
+      Type: AWS::ElasticLoadBalancingV2::Listener
+      Properties:
+        LoadBalancerArn: !Ref JbbLoadBalancer
+        Port: 80
+        Protocol: HTTP
+        DefaultActions:
+          - Type: forward
+            TargetGroupArn: !Ref JbbTargetGroup
+
+    JbbTargetGroup:
+      Type: AWS::ElasticLoadBalancingV2::TargetGroup
+      Properties:
+        HealthCheckIntervalSeconds: 6
+        HealthCheckPath: /
+        HealthCheckProtocol: HTTP
+        HealthCheckTimeoutSeconds: 5
+        HealthyThresholdCount: 2
+        TargetType: ip 
+        VpcId: !Ref VPC
+        Port: 80
+        Protocol: HTTP
+
+Outputs:
+
+    LoadBalancerUrl:
+        Description: The URL of the ALB
+        Value: !GetAtt JbbLoadBalancer.DNSName
+
+
+
+
+
+

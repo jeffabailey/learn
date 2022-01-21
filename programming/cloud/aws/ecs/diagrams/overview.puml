@@ -1,4 +1,6 @@
 @startuml
+title = The Primary components of ECS
+skinparam backgroundColor #ffffff
 component Cluster {
     skinparam BackgroundColor transparent
     skinparam componentStyle uml2

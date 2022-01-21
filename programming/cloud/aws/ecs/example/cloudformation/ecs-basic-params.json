@@ -1,0 +1,8 @@
+{
+  "Parameters": {
+    "EcsInstanceType": "t2.micro",
+    "VPC": "vpc-39a0675c",
+    "PublicSubnetOne": "subnet-00956477",
+    "PublicSubnetTwo": "subnet-2c46576a"
+  }
+}
