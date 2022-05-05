@@ -1,9 +1,11 @@
 @startuml
 
+title = LaunchType ECS - Component Relationships
+skinparam backgroundColor #ffffff
+
 participant VPC
 participant "EC2 Instance" as EC2
 participant "Auto Scaling Group" as ASG
-participant Container
 participant "Container Instance" as ContainerInstance
 participant Cluster
 participant Agent

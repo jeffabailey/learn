@@ -1,0 +1,29 @@
+@startuml
+
+title = LaunchType ECS - Component Relationships
+skinparam backgroundColor #ffffff
+
+participant VPC
+participant "EC2 Instance" as EC2
+participant "Auto Scaling Group" as ASG
+participant "Container Instance" as ContainerInstance
+participant Cluster
+participant Agent
+participant Task as "Task (Container)"
+participant "Task Definition" as TaskDefinition
+participant Service
+participant Scheduler
+participant HealthCheck as "Health Check"
+
+VPC->ASG: An Auto Scaling Group is created with an IAM role and a Launch Configuration.
+ASG->EC2: Launches an ECS capable EC2 instances with NVIDIA GPUs.
+EC2->ContainerInstance: Launches a Container Instance.
+ContainerInstance->Agent: Launches the container agent.
+ContainerInstance->Cluster: Registers with the cluster.
+ContainerInstance->Service: Containers are provisioned by the service.
+Service->Scheduler: Reschedules tasks when a task fails.
+Scheduler->TaskDefinition: Creates tasks from a task definition.
+Scheduler->Task: Launches a task, or container, based on a configured desired state.
+Task->HealthCheck: Stays active until healthcheck fails and is automatically replaced.
+
+@enduml
