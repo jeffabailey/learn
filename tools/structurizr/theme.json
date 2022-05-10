@@ -1,44 +1,18 @@
 {
-  "name" : "Jeff Bailey's Blog",
-  "description" : "https://jeffbailey.us",
-  "elements" : [ {
-    "tag" : "Person",
-    "color" : "#ff001c",
-    "fontSize" : 22,
-    "shape" : "Person"
-  }, {
-    "tag" : "Customer",
-    "background" : "#08427b"
-  }, {
-    "tag" : "Bank Staff",
-    "background" : "#999999"
-  }, {
-    "tag" : "Software System",
-    "background" : "#1168bd",
-    "color" : "#ffffff"
-  }, {
-    "tag" : "Existing System",
-    "background" : "#999999",
-    "color" : "#ffffff"
-  }, {
-    "tag" : "Container",
-    "background" : "#438dd5",
-    "color" : "#ffffff"
-  }, {
-    "tag" : "Web Browser",
-    "shape" : "WebBrowser"
-  }, {
-    "tag" : "Mobile App",
-    "shape" : "MobileDeviceLandscape"
-  }, {
-    "tag" : "Database",
-    "shape" : "Cylinder"
-  }, {
-    "tag" : "Component",
-    "background" : "#85bbf0",
-    "color" : "#000000"
-  }, {
-    "tag" : "Failover",
-    "opacity" : 25
-  } ]
+  "name": "Jeff Bailey's Blog",
+  "description": "https://jeffbailey.us",
+  "elements": [
+    {
+      "tag": "Person",
+      "fontSize": 35,
+      "shape": "Person",
+      "opacity": 89
+    },
+    {
+      "tag": "Software System",
+      "fontSize": 35,
+      "color": "#000000",
+      "opacity": 89
+    }
+  ]
 }
