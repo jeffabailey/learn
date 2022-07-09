@@ -1,0 +1,191 @@
+{
+  "id" : 1,
+  "name" : "Name",
+  "description" : "Description",
+  "revision" : 0,
+  "lastModifiedDate" : "2022-07-09T05:45:55Z",
+  "lastModifiedAgent" : "structurizr-web/2761/diagram",
+  "properties" : {
+    "structurizr.dsl" : "d29ya3NwYWNlIHsKCiAgICBtb2RlbCB7CmhlYWRsaW5lID0gZWxlbWVudCAiSGVhZGxpbmUiICIiICIiIHsKICAgIGRlc2NyaXB0aW9uICJhIGhlYWRpbmcgYXQgdGhlIHRvcCBvZiBhbiBhcnRpY2xlIG9yIHBhZ2UgaW4gYSBuZXdzcGFwZXIgb3IgbWFnYXppbmUiCiAgICB1cmwgImh0dHBzOi8vZW4ud2lraXBlZGlhLm9yZy93aWtpL0hlYWRsaW5lIgp9CgpzdWJoZWFkaW5nID0gZWxlbWVudCAiU3ViaGVhZGluZyIgIiIgIiIgewogICAgZGVzY3JpcHRpb24gImEgaGVhZGluZyBnaXZlbiB0byBhIHN1YnNlY3Rpb24gb2YgYSBwaWVjZSBvZiB3cml0aW5nIgogICAgdXJsICJodHRwczovL2VuLndpa2lwZWRpYS5vcmcvd2lraS9OZXdzX3N0eWxlI1N1YmhlYWRpbmciCn0KYXV0aG9yID0gcGVyc29uICJBdXRob3IiICIiICIiIHsKICAgIGRlc2NyaXB0aW9uICJhIHdyaXRlciBvZiBhIGJvb2ssIGFydGljbGUsIG9yIHJlcG9ydCIKICAgIHVybCAiaHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvQXV0aG9yIgp9CgpyZWFkZXIgPSBwZXJzb24gIlJlYWRlciIgIiIgIiIgewogICAgZGVzY3JpcHRpb24gImEgcGVyc29uIHdobyByZWFkcyBvciB3aG8gaXMgZm9uZCBvZiByZWFkaW5nOiIKICAgIHVybCAiaHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvUmVhZGVyIgp9CmFjdGlvbiA9IGVsZW1lbnQgIkFjdGlvbiIgIiIgIiIgewogICAgZGVzY3JpcHRpb24gInRoZSBmYWN0IG9yIHByb2Nlc3Mgb2YgZG9pbmcgc29tZXRoaW5nLCB0eXBpY2FsbHkgdG8gYWNoaWV2ZSBhbiBhaW0iCn0KCmNvbnRleHQgPSBlbGVtZW50ICJDb250ZXh0IiAiIiAiIiB7CiAgICBkZXNjcmlwdGlvbiAidGhlIGNpcmN1bXN0YW5jZXMgdGhhdCBmb3JtIHRoZSBzZXR0aW5nIGZvciBhbiBldmVudCwgc3RhdGVtZW50LCBvciBpZGVhLCBhbmQgaW4gdGVybXMgb2Ygd2hpY2ggaXQgY2FuIGJlIGZ1bGx5IHVuZGVyc3Rvb2QgYW5kIGFzc2Vzc2VkIgp9CgppbnRlbnQgPSBlbGVtZW50ICJJbnRlbnQiICIiICIiIHsKICAgIGRlc2NyaXB0aW9uICJpbnRlbnRpb24gb3IgcHVycG9zZSIKfQoKd3JpdGluZyA9IGVsZW1lbnQgIldyaXRpbmciICIiICIiICB7CiAgICB1cmwgImh0dHBzOi8vZW4ud2lraXBlZGlhLm9yZy93aWtpL1dyaXRpbmciCn0KCnN1cHBsZW1lbnQgPSBlbGVtZW50ICJTdXBwbGVtZW50IiAiIiAiIiB7CiAgICBkZXNjcmlwdGlvbiAic29tZXRoaW5nIHRoYXQgY29tcGxldGVzIG9yIGVuaGFuY2VzIHNvbWV0aGluZyBlbHNlIHdoZW4gYWRkZWQgdG8gaXQiCn0KCnRha2Vhd2F5ID0gZWxlbWVudCAiVGFrZWF3YXkiICIiICIiIHsKICAgIGRlc2NyaXB0aW9uICJhIGtleSBmYWN0LCBwb2ludCwgb3IgaWRlYSB0byBiZSByZW1lbWJlcmVkLCB0eXBpY2FsbHkgb25lIGVtZXJnaW5nIGZyb20gYSBkaXNjdXNzaW9uIG9yIG1lZXRpbmciCn0KCi8vIGh0dHBzOi8vdHdpdHRlci5jb20vZXJpY2FzbXluYW1lL3N0YXR1cy8xNTQ0MzY1MDkyMzEyOTc3NDA4CnJlYWRlciAtPiBoZWFkbGluZSAiR2FpbiBhIHJlYWRlcidzIGF0dGVudGlvbiIKaGVhZGxpbmUgLT4gaW50ZW50ICJBbnN3ZXIgaW50ZW50IHdpdGggYSBoZWFkbGluZSIKaGVhZGxpbmUgLT4gc3ViaGVhZGluZyAiQW5zd2VyIHdoeSB3aXRoIGEgc3ViaGVhZGluZyIKc3ViaGVhZGluZyAtPiBjb250ZXh0ICJTZXQgY29udGV4dCBmb3IgeW91ciBhcmd1bWVudCB3aXRob3V0IHN1cHBsZW1lbnRhbCBpbmZvcm1hdGlvbiIKY29udGV4dCAtPiBzdXBwbGVtZW50ICJBZGQgcmVsYXRhYmxlIGRldGFpbCB0byBiYWNrIHVwIHlvdXIgYXJndW1lbnQgJiBzaGFyZSBpZGVhcyIKc3VwcGxlbWVudCAtPiBpbnRlbnQgIlN1cHBsZW1lbnRhbCBpbmZvcm1hdGlvbiByZWluZm9yY2VzIHlvdXIgaW50ZW50IgppbnRlbnQgLT4gdGFrZWF3YXkgIkNsb3NlIHRoZSBsb29wIgp0YWtlYXdheSAtPiBhY3Rpb24gIkNhbGwgdG8gYWN0aW9uIgogICAgfQoKICAgIHZpZXdzIHsKc3lzdGVtTGFuZHNjYXBlICJDb250ZW50V3JpdGluZ0Z1bmRhbWVudGFscyIgIldoYXQgYXJlIHRoZSBjb250ZW50IHdyaXRpbmcgZnVuZGFtZW50YWxzPyIgewogICAgaW5jbHVkZSBhY3Rpb24KICAgIGluY2x1ZGUgaGVhZGxpbmUKICAgIGluY2x1ZGUgaW50ZW50CiAgICBpbmNsdWRlIHJlYWRlcgogICAgaW5jbHVkZSBzdWJoZWFkaW5nCiAgICBpbmNsdWRlIHRha2Vhd2F5Cn0KCiAgICAgICAgc3R5bGVzIHsKICAgICAgICAgICAgZWxlbWVudCAiUGVyc29uIiB7CiAgICAgICAgICAgICAgICBzaGFwZSAicGVyc29uIgogICAgICAgICAgICB9CgogICAgICAgICAgICBlbGVtZW50IHJlbGF0aW9uc2hpcCB7CiAgICAgICAgICAgICAgICBib3JkZXIgInNvbGlkIgogICAgICAgICAgICB9CiAgICAgICAgfQogICAgfQoKfQo="
+  },
+  "configuration" : { },
+  "model" : {
+    "people" : [ {
+      "id" : "4",
+      "tags" : "Element,Person",
+      "url" : "https://en.wikipedia.org/wiki/Reader",
+      "name" : "Reader",
+      "description" : "a person who reads or who is fond of reading:",
+      "relationships" : [ {
+        "id" : "11",
+        "tags" : "Relationship",
+        "sourceId" : "4",
+        "destinationId" : "1",
+        "description" : "Gain a reader's attention"
+      } ],
+      "location" : "Unspecified"
+    }, {
+      "id" : "3",
+      "tags" : "Element,Person",
+      "url" : "https://en.wikipedia.org/wiki/Author",
+      "name" : "Author",
+      "description" : "a writer of a book, article, or report",
+      "location" : "Unspecified"
+    } ],
+    "customElements" : [ {
+      "id" : "1",
+      "tags" : "Element",
+      "url" : "https://en.wikipedia.org/wiki/Headline",
+      "name" : "Headline",
+      "description" : "a heading at the top of an article or page in a newspaper or magazine",
+      "relationships" : [ {
+        "id" : "12",
+        "tags" : "Relationship",
+        "sourceId" : "1",
+        "destinationId" : "7",
+        "description" : "Answer intent with a headline"
+      }, {
+        "id" : "13",
+        "tags" : "Relationship",
+        "sourceId" : "1",
+        "destinationId" : "2",
+        "description" : "Answer why with a subheading"
+      } ]
+    }, {
+      "id" : "5",
+      "tags" : "Element",
+      "name" : "Action",
+      "description" : "the fact or process of doing something, typically to achieve an aim"
+    }, {
+      "id" : "9",
+      "tags" : "Element",
+      "name" : "Supplement",
+      "description" : "something that completes or enhances something else when added to it",
+      "relationships" : [ {
+        "id" : "16",
+        "tags" : "Relationship",
+        "sourceId" : "9",
+        "destinationId" : "7",
+        "description" : "Supplemental information reinforces your intent"
+      } ]
+    }, {
+      "id" : "10",
+      "tags" : "Element",
+      "name" : "Takeaway",
+      "description" : "a key fact, point, or idea to be remembered, typically one emerging from a discussion or meeting",
+      "relationships" : [ {
+        "id" : "18",
+        "tags" : "Relationship",
+        "sourceId" : "10",
+        "destinationId" : "5",
+        "description" : "Call to action"
+      } ]
+    }, {
+      "id" : "2",
+      "tags" : "Element",
+      "url" : "https://en.wikipedia.org/wiki/News_style#Subheading",
+      "name" : "Subheading",
+      "description" : "a heading given to a subsection of a piece of writing",
+      "relationships" : [ {
+        "id" : "14",
+        "tags" : "Relationship",
+        "sourceId" : "2",
+        "destinationId" : "6",
+        "description" : "Set context for your argument without supplemental information"
+      } ]
+    }, {
+      "id" : "7",
+      "tags" : "Element",
+      "name" : "Intent",
+      "description" : "intention or purpose",
+      "relationships" : [ {
+        "id" : "17",
+        "tags" : "Relationship",
+        "sourceId" : "7",
+        "destinationId" : "10",
+        "description" : "Close the loop"
+      } ]
+    }, {
+      "id" : "8",
+      "tags" : "Element",
+      "url" : "https://en.wikipedia.org/wiki/Writing",
+      "name" : "Writing"
+    }, {
+      "id" : "6",
+      "tags" : "Element",
+      "name" : "Context",
+      "description" : "the circumstances that form the setting for an event, statement, or idea, and in terms of which it can be fully understood and assessed",
+      "relationships" : [ {
+        "id" : "15",
+        "tags" : "Relationship",
+        "sourceId" : "6",
+        "destinationId" : "9",
+        "description" : "Add relatable detail to back up your argument & share ideas"
+      } ]
+    } ]
+  },
+  "documentation" : { },
+  "views" : {
+    "systemLandscapeViews" : [ {
+      "description" : "What are the content writing fundamentals?",
+      "key" : "ContentWritingFundamentals",
+      "order" : 1,
+      "paperSize" : "A4_Portrait",
+      "dimensions" : {
+        "width" : 1616,
+        "height" : 3216
+      },
+      "enterpriseBoundaryVisible" : true,
+      "elements" : [ {
+        "id" : "1",
+        "x" : 583,
+        "y" : 908
+      }, {
+        "id" : "2",
+        "x" : 208,
+        "y" : 1508
+      }, {
+        "id" : "4",
+        "x" : 608,
+        "y" : 208
+      }, {
+        "id" : "5",
+        "x" : 958,
+        "y" : 2708
+      }, {
+        "id" : "7",
+        "x" : 958,
+        "y" : 1508
+      }, {
+        "id" : "10",
+        "x" : 958,
+        "y" : 2108
+      } ],
+      "relationships" : [ {
+        "id" : "18"
+      }, {
+        "id" : "17"
+      }, {
+        "id" : "13"
+      }, {
+        "id" : "12"
+      }, {
+        "id" : "11"
+      } ]
+    } ],
+    "configuration" : {
+      "branding" : { },
+      "styles" : {
+        "elements" : [ {
+          "tag" : "Person",
+          "shape" : "Person"
+        }, {
+          "tag" : "relationship",
+          "border" : "Solid"
+        } ]
+      },
+      "terminology" : { },
+      "lastSavedView" : "ContentWritingFundamentals"
+    }
+  }
+}
