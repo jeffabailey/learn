@@ -1,11 +1,12 @@
 repo_name: jeffabailey/learn
 report_id: 52a755697dccbabe6bb42d85ebaf1e9e
+version: 0.1
 repo_type: Public
-timestamp: '2023-11-18T14:29:27+00:00'
+timestamp: '2024-01-05T08:37:32+00:00'
 requested_by: jeffabailey
 provider: github
 branch: main
-detected_tools_count: 37
+detected_tools_count: 46
 tools:
 - name: CSS 3
   description: The latest evolution of the Cascading Style Sheets language
@@ -15,6 +16,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/6727/css.png
+  detection_source_url: https://github.com/jeffabailey/learn
   detection_source: Repo Metadata
 - name: Java
   description: A concurrent, class-based, object-oriented, language specifically designed
@@ -25,6 +27,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/995/K85ZWV2F.png
+  detection_source_url: https://github.com/jeffabailey/learn
   detection_source: Repo Metadata
 - name: JavaScript
   description: Lightweight, interpreted, object-oriented language with first-class
@@ -35,6 +38,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/1209/javascript.jpeg
+  detection_source_url: https://github.com/jeffabailey/learn
   detection_source: Repo Metadata
 - name: Python
   description: A clear and powerful object-oriented programming language, comparable
@@ -45,6 +49,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/993/pUBY5pVj.png
+  detection_source_url: https://github.com/jeffabailey/learn
   detection_source: Repo Metadata
 - name: SQL
   description: It is a domain-specific language used in programming
@@ -54,6 +59,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/2271/default_068d33483bba6b81ee13fbd4dc7aab9780896a54.png
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/software/observability/signalfx/scripts/setup.sql
   detection_source: software/observability/signalfx/scripts/setup.sql
   last_updated_by: Jeff Bailey
   last_updated_on: 2022-01-17 23:55:33.000000000 Z
@@ -66,6 +72,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/1612/bynNY5dJ.jpg
+  detection_source_url: https://github.com/jeffabailey/learn
   detection_source: Repo Metadata
 - name: ExpressJS
   description: Sinatra inspired web development framework for node.js -- insanely
@@ -78,7 +85,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Microframeworks (Backend)
   image_url: https://img.stackshare.io/service/1163/hashtag.png
-  detection_source_url: programming/cloud/aws/amplify/yarn.lock
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/cloud/aws/amplify/yarn.lock
   detection_source: programming/distributed-tracing/distributed-tracing-nodejs/package.json
   last_updated_by: Jeff Bailey
   last_updated_on: 2022-01-17 23:55:33.000000000 Z
@@ -91,6 +98,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Frameworks (Full Stack)
   image_url: https://img.stackshare.io/service/1011/n1JRsFeB_400x400.png
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/cloud/aws/amplify/package.json
   detection_source: programming/cloud/aws/amplify/package.json
   last_updated_by: Jeff Bailey
   last_updated_on: 2022-01-17 23:55:33.000000000 Z
@@ -104,7 +112,7 @@ tools:
   category: Libraries
   sub_category: Javascript UI Libraries
   image_url: https://img.stackshare.io/service/1020/OYIaJ1KK.png
-  detection_source_url: programming/cloud/aws/amplify/yarn.lock
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/cloud/aws/amplify/yarn.lock
   detection_source: programming/cloud/aws/amplify/package.json
   last_updated_by: Jeff Bailey
   last_updated_on: 2022-01-17 23:55:33.000000000 Z
@@ -118,6 +126,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Frameworks (Full Stack)
   image_url: https://img.stackshare.io/service/2006/spring-framework-project-logo.png
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/distributed-tracing/distributed-tracing-java/build.gradle
   detection_source: programming/distributed-tracing/distributed-tracing-java/build.gradle
   last_updated_by: Jeff Bailey
   last_updated_on: 2022-01-17 23:55:33.000000000 Z
@@ -129,7 +138,20 @@ tools:
   category: Languages & Frameworks
   sub_category: Query Languages
   image_url: https://img.stackshare.io/service/3820/12972006.png
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/cloud/aws/amplify/amplify/backend/api/learnawsamplify/schema.graphql
   detection_source: programming/cloud/aws/amplify/amplify/backend/api/learnawsamplify/schema.graphql
+  last_updated_by: Jeff Bailey
+  last_updated_on: 2022-01-17 23:55:33.000000000 Z
+- name: pgvector
+  description: Open-source vector similarity search for Postgres
+  website_url: https://github.com/pgvector/pgvector/
+  open_source: false
+  hosted_saas: false
+  category: Data Stores
+  sub_category: Database Tools
+  image_url: https://img.stackshare.io/service/109221/default_b888cdf5617d936aa6aacf130911906955508639.png
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/cloud/aws/amplify/public/robots.txt
+  detection_source: programming/cloud/aws/amplify/public/robots.txt
   last_updated_by: Jeff Bailey
   last_updated_on: 2022-01-17 23:55:33.000000000 Z
 - name: AWS Amplify
@@ -142,7 +164,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: AWS Tools
   image_url: https://img.stackshare.io/no-img-open-source.png
-  detection_source_url: programming/cloud/aws/amplify/yarn.lock
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/cloud/aws/amplify/yarn.lock
   detection_source: programming/cloud/aws/amplify/package.json
   last_updated_by: Jeff Bailey
   last_updated_on: 2022-01-17 23:55:33.000000000 Z
@@ -155,6 +177,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Virtual Machine Platforms & Containers
   image_url: https://img.stackshare.io/service/586/n4u37v9t_400x400.png
+  detection_source_url: https://github.com/jeffabailey/learn
   detection_source: Repo Metadata
 - name: Git
   description: Fast, scalable, distributed revision control system
@@ -164,6 +187,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Version Control System
   image_url: https://img.stackshare.io/service/1046/git.png
+  detection_source_url: https://github.com/jeffabailey/learn
   detection_source: Repo Metadata
 - name: Gradle
   description: A powerful build system for the JVM
@@ -174,7 +198,8 @@ tools:
   category: Build, Test, Deploy
   sub_category: Java Build Tools
   image_url: https://img.stackshare.io/service/975/gradlephant-social-black-bg.png
-  detection_source: programming/distributed-tracing/distributed-tracing-java/gradlew.bat
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/distributed-tracing/distributed-tracing-java/build.gradle
+  detection_source: programming/distributed-tracing/distributed-tracing-java/build.gradle
   last_updated_by: Jeff Bailey
   last_updated_on: 2022-01-17 23:55:33.000000000 Z
 - name: Jest
@@ -187,10 +212,22 @@ tools:
   category: Build, Test, Deploy
   sub_category: Javascript Testing Framework
   image_url: https://img.stackshare.io/service/830/jest.png
-  detection_source_url: programming/cloud/aws/amplify/yarn.lock
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/cloud/aws/amplify/yarn.lock
   detection_source: programming/cloud/aws/amplify/package.json
   last_updated_by: Jeff Bailey
   last_updated_on: 2022-01-17 23:55:33.000000000 Z
+- name: PyPI
+  description: A repository of software for the Python programming language
+  website_url: https://pypi.org/
+  open_source: false
+  hosted_saas: false
+  category: Build, Test, Deploy
+  sub_category: Hosted Package Repository
+  image_url: https://img.stackshare.io/service/12572/-RIWgodF_400x400.jpg
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/python/requirements.txt
+  detection_source: programming/python/requirements.txt
+  last_updated_by: Jeff Bailey
+  last_updated_on: 2022-01-17 23:48:26.000000000 Z
 - name: Yarn
   description: A new package manager for JavaScript
   website_url: https://yarnpkg.com/
@@ -199,6 +236,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Front End Package Manager
   image_url: https://img.stackshare.io/service/5848/44mC-kJ3.jpg
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/cloud/aws/amplify/yarn.lock
   detection_source: programming/cloud/aws/amplify/yarn.lock
   last_updated_by: Jeff Bailey
   last_updated_on: 2022-01-17 23:55:33.000000000 Z
@@ -210,6 +248,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Front End Package Manager
   image_url: https://img.stackshare.io/service/1120/lejvzrnlpb308aftn31u.png
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/distributed-tracing/distributed-tracing-nodejs/package.json
   detection_source: programming/distributed-tracing/distributed-tracing-nodejs/package.json
   last_updated_by: Jeff Bailey
   last_updated_on: 2022-01-17 23:55:33.000000000 Z
@@ -222,6 +261,7 @@ tools:
   category: Application Hosting
   sub_category: Platform as a Service
   image_url: https://img.stackshare.io/service/3276/xWt1RFo6_400x400.jpg
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/distributed-tracing/distributed-tracing-java/src/main/resources/application.properties
   detection_source: programming/distributed-tracing/distributed-tracing-java/src/main/resources/application.properties
 - name: Debian
   description: The Universal Operating System
@@ -231,6 +271,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Operating Systems
   image_url: https://img.stackshare.io/service/1656/vd4gAekh.png
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/software/observability/signalfx/Dockerfile
   detection_source: software/observability/signalfx/Dockerfile
   last_updated_by: Jeff Bailey
   last_updated_on: 2022-01-17 23:55:33.000000000 Z
@@ -240,7 +281,20 @@ tools:
   open_source: false
   hosted_saas: false
   image_url: https://img.stackshare.io/service/2270/no-img-open-source.png
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/cloud/aws/amplify/public/index.html
   detection_source: programming/cloud/aws/amplify/public/index.html
+  last_updated_by: Jeff Bailey
+  last_updated_on: 2022-01-17 23:55:33.000000000 Z
+- name: LangChain
+  description: Build AI apps with LLMs through composability
+  website_url: https://github.com/hwchase17/langchain
+  open_source: true
+  hosted_saas: false
+  category: Communications
+  sub_category: Large Language Model Tools
+  image_url: https://img.stackshare.io/service/48790/default_5b6c6b73f1ff3775c85d2a1ba954cb87e30cbf13.jpg
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/cloud/aws/amplify/public/robots.txt
+  detection_source: programming/cloud/aws/amplify/public/robots.txt
   last_updated_by: Jeff Bailey
   last_updated_on: 2022-01-17 23:55:33.000000000 Z
 - name: NumPy
@@ -253,7 +307,7 @@ tools:
   category: Libraries
   sub_category: Data Science Tools
   image_url: https://img.stackshare.io/service/2179/default_332f874a2edb2686f578aa6389313efcea1eec41.png
-  detection_source_url: programming/python/requirements.txt
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/python/requirements.txt
   detection_source: programming/python/requirements.txt
   last_updated_by: Jeff Bailey
   last_updated_on: 2022-01-17 23:48:26.000000000 Z
@@ -266,6 +320,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/4631/default_c2062d40130562bdc836c13dbca02d318205a962.png
+  detection_source_url: https://github.com/jeffabailey/learn
   detection_source: Repo Metadata
 - name: "@testing-library/jest-dom"
   description: Custom jest matchers to test the state of the DOM
@@ -277,7 +332,7 @@ tools:
   category: Libraries
   sub_category: npm Packages
   image_url: https://img.stackshare.io/package/17424/default_1cdcda15ebb7caed879f8340bc212b44c4ec9dac.png
-  detection_source_url: programming/cloud/aws/amplify/yarn.lock
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/cloud/aws/amplify/yarn.lock
   detection_source: programming/cloud/aws/amplify/package.json
   last_updated_by: Jeff Bailey
   last_updated_on: 2022-01-17 23:55:33.000000000 Z
@@ -292,7 +347,7 @@ tools:
   category: Libraries
   sub_category: npm Packages
   image_url: https://img.stackshare.io/package/16549/default_d522554c6a41cb28d922d6d3ad32ad4afa0e3bb5.png
-  detection_source_url: programming/cloud/aws/amplify/yarn.lock
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/cloud/aws/amplify/yarn.lock
   detection_source: programming/cloud/aws/amplify/package.json
   last_updated_by: Jeff Bailey
   last_updated_on: 2022-01-17 23:55:33.000000000 Z
@@ -306,7 +361,7 @@ tools:
   category: Libraries
   sub_category: npm Packages
   image_url: https://img.stackshare.io/package/15840/default_004658cda9b38934f2871435e9dc15608c86e8be.png
-  detection_source_url: programming/cloud/aws/amplify/yarn.lock
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/cloud/aws/amplify/yarn.lock
   detection_source: programming/cloud/aws/amplify/package.json
   last_updated_by: Jeff Bailey
   last_updated_on: 2022-01-17 23:55:33.000000000 Z
@@ -320,7 +375,7 @@ tools:
   category: Libraries
   sub_category: npm Packages
   image_url: https://img.stackshare.io/package/15809/default_5e5e8ac63beda29f31f1844df64d4b8247570a66.png
-  detection_source_url: programming/cloud/aws/amplify/yarn.lock
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/cloud/aws/amplify/yarn.lock
   detection_source: programming/cloud/aws/amplify/package.json
   last_updated_by: Jeff Bailey
   last_updated_on: 2022-01-17 23:55:33.000000000 Z
@@ -334,7 +389,7 @@ tools:
   category: Libraries
   sub_category: npm Packages
   image_url: https://img.stackshare.io/package/15894/default_1d65e37e65b7f80761374f0202776043277d505d.png
-  detection_source_url: programming/cloud/aws/amplify/yarn.lock
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/cloud/aws/amplify/yarn.lock
   detection_source: programming/cloud/aws/amplify/package.json
   last_updated_by: Jeff Bailey
   last_updated_on: 2022-01-17 23:55:33.000000000 Z
@@ -348,7 +403,7 @@ tools:
   category: Libraries
   sub_category: npm Packages
   image_url: https://img.stackshare.io/package/15946/default_54b691c123fc8979741e800e4dcd3936c0f3b246.png
-  detection_source_url: programming/cloud/aws/amplify/yarn.lock
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/cloud/aws/amplify/yarn.lock
   detection_source: programming/cloud/aws/amplify/package.json
   last_updated_by: Jeff Bailey
   last_updated_on: 2022-01-17 23:55:33.000000000 Z
@@ -362,7 +417,7 @@ tools:
   category: Libraries
   sub_category: npm Packages
   image_url: https://img.stackshare.io/package/16136/default_def3edb85d7fbd20200a5cd7d0a1679e31bc8b3d.png
-  detection_source_url: programming/distributed-tracing/distributed-tracing-nodejs/package.json
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/distributed-tracing/distributed-tracing-nodejs/package.json
   detection_source: programming/distributed-tracing/distributed-tracing-nodejs/package.json
   last_updated_by: Jeff Bailey
   last_updated_on: 2022-01-17 23:55:33.000000000 Z
@@ -376,7 +431,7 @@ tools:
   category: Libraries
   sub_category: npm Packages
   image_url: https://img.stackshare.io/package/15852/default_a2f722724df977d0f7752839e5d8845ab41f69d5.png
-  detection_source_url: programming/cloud/aws/amplify/yarn.lock
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/cloud/aws/amplify/yarn.lock
   detection_source: programming/distributed-tracing/distributed-tracing-nodejs/package.json
   last_updated_by: Jeff Bailey
   last_updated_on: 2022-01-17 23:55:33.000000000 Z
@@ -390,7 +445,7 @@ tools:
   category: Libraries
   sub_category: npm Packages
   image_url: https://img.stackshare.io/package/15818/default_db4a7791d2f1174547374b9b587bc10fec088a5a.png
-  detection_source_url: programming/cloud/aws/amplify/yarn.lock
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/cloud/aws/amplify/yarn.lock
   detection_source: programming/distributed-tracing/distributed-tracing-nodejs/package.json
   last_updated_by: Jeff Bailey
   last_updated_on: 2022-01-17 23:55:33.000000000 Z
@@ -411,7 +466,7 @@ tools:
   category: Libraries
   sub_category: npm Packages
   image_url: https://img.stackshare.io/package/16925/default_7b9968788548874538c601457e8dcd9c74bd2051.png
-  detection_source_url: programming/cloud/aws/amplify/yarn.lock
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/cloud/aws/amplify/yarn.lock
   detection_source: programming/distributed-tracing/distributed-tracing-nodejs/package.json
   last_updated_by: Jeff Bailey
   last_updated_on: 2022-01-17 23:55:33.000000000 Z
@@ -425,7 +480,7 @@ tools:
   category: Libraries
   sub_category: npm Packages
   image_url: https://img.stackshare.io/package/16163/default_73326c44fbfa7369fd17573edb113e5d849468bc.png
-  detection_source_url: programming/distributed-tracing/distributed-tracing-nodejs/package.json
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/distributed-tracing/distributed-tracing-nodejs/package.json
   detection_source: programming/distributed-tracing/distributed-tracing-nodejs/package.json
   last_updated_by: Jeff Bailey
   last_updated_on: 2022-01-17 23:55:33.000000000 Z
@@ -439,7 +494,7 @@ tools:
   category: Libraries
   sub_category: npm Packages
   image_url: https://img.stackshare.io/package/16097/default_c7b204838197013798409fa2b4dafce450edc7fb.png
-  detection_source_url: programming/distributed-tracing/distributed-tracing-nodejs/package.json
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/distributed-tracing/distributed-tracing-nodejs/package.json
   detection_source: programming/distributed-tracing/distributed-tracing-nodejs/package.json
   last_updated_by: Jeff Bailey
   last_updated_on: 2022-01-17 23:55:33.000000000 Z
@@ -453,7 +508,7 @@ tools:
   category: Libraries
   sub_category: npm Packages
   image_url: https://img.stackshare.io/package/15808/default_14fd11531839d935f920b6d55bd6f3528c890ad7.png
-  detection_source_url: programming/cloud/aws/amplify/yarn.lock
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/cloud/aws/amplify/yarn.lock
   detection_source: programming/cloud/aws/amplify/package.json
   last_updated_by: Jeff Bailey
   last_updated_on: 2022-01-17 23:55:33.000000000 Z
@@ -467,7 +522,88 @@ tools:
   category: Libraries
   sub_category: npm Packages
   image_url: https://img.stackshare.io/package/15985/default_8b5680d4e916298d08363c291a0d6e34c07ceb15.png
-  detection_source_url: programming/cloud/aws/amplify/yarn.lock
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/cloud/aws/amplify/yarn.lock
   detection_source: programming/cloud/aws/amplify/package.json
+  last_updated_by: Jeff Bailey
+  last_updated_on: 2022-01-17 23:55:33.000000000 Z
+- name: pandas
+  description: Powerful data structures for data analysis
+  package_url: https://pypi.org/project/pandas
+  version: 1.0.3
+  license: BSD-3-Clause
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: PyPI Packages
+  image_url: https://img.stackshare.io/package/19837/default_85689b353a3a9409328e253ea28d859d29151e0c.png
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/python/requirements.txt
+  detection_source: programming/python/requirements.txt
+  last_updated_by: Jeff Bailey
+  last_updated_on: 2022-01-17 23:48:26.000000000 Z
+- name: python-dateutil
+  description: Extensions to the standard Python datetime module
+  package_url: https://pypi.org/project/python-dateutil
+  version: 2.8.1
+  license: NRL
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: PyPI Packages
+  image_url: https://img.stackshare.io/package/19833/default_58dbe7b4d7ec447b62773209af0f9a31bbabf5bd.png
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/python/requirements.txt
+  detection_source: programming/python/requirements.txt
+  last_updated_by: Jeff Bailey
+  last_updated_on: 2022-01-17 23:48:26.000000000 Z
+- name: pytz
+  description: World timezone definitions, modern and historical
+  package_url: https://pypi.org/project/pytz
+  version: '2020.1'
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: PyPI Packages
+  image_url: https://img.stackshare.io/package/19841/default_bb711fa267b2329ed689711a5adb7d9e74610b20.png
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/python/requirements.txt
+  detection_source: programming/python/requirements.txt
+  last_updated_by: Jeff Bailey
+  last_updated_on: 2022-01-17 23:48:26.000000000 Z
+- name: six
+  description: Python 2 and 3 compatibility utilities
+  package_url: https://pypi.org/project/six
+  version: 1.15.0
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: PyPI Packages
+  image_url: https://img.stackshare.io/package/19827/default_74a61b43bdb9fc0cba2978316b9976f43545029b.png
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/python/requirements.txt
+  detection_source: programming/python/requirements.txt
+  last_updated_by: Jeff Bailey
+  last_updated_on: 2022-01-17 23:48:26.000000000 Z
+- name: org.springframework.boot:spring-boot-starter
+  description: Core starter
+  license: Apache-2.0
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Maven Packages
+  image_url: https://img.stackshare.io/package/maven/image.png
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/distributed-tracing/distributed-tracing-java/build.gradle
+  detection_source: programming/distributed-tracing/distributed-tracing-java/build.gradle
+  last_updated_by: Jeff Bailey
+  last_updated_on: 2022-01-17 23:55:33.000000000 Z
+- name: org.springframework.boot:spring-boot-starter-test
+  description: Starter for testing Spring Boot applications with libraries including
+    JUnit
+  license: Apache-2.0
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Maven Packages
+  image_url: https://img.stackshare.io/package/maven/image.png
+  detection_source_url: https://github.com/jeffabailey/learn/blob/main/programming/distributed-tracing/distributed-tracing-java/build.gradle
+  detection_source: programming/distributed-tracing/distributed-tracing-java/build.gradle
   last_updated_by: Jeff Bailey
   last_updated_on: 2022-01-17 23:55:33.000000000 Z
