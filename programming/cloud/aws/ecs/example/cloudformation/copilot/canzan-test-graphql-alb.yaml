@@ -1,0 +1,99 @@
+# https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/Welcome.html
+Description: CloudFormation environment template for infrastructure shared among Copilot workloads.
+Metadata:
+  Version: v1.7.0
+Parameters:
+  AppName:
+    Type: String
+    Default: canzan-graphql
+  EnvironmentName:
+    Type: String
+    Default: test
+  VpcId:
+    Type: String
+    Default: vpc-031d69262bbb6a9c2
+  PublicSubnet1:
+    Type: String
+    Default: subnet-03f2ee71656729094
+  PublicSubnet2:
+    Type: String
+    Default: subnet-08482fdb0731bd3ed
+Resources:
+  PublicLoadBalancerSecurityGroup:
+    Metadata:
+      'description': 'A security group for your load balancer allowing HTTP and HTTPS traffic'
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Access to the public facing load balancer
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allow from anyone on port 5097
+          FromPort: 80
+          IpProtocol: tcp
+          ToPort: 5097
+      VpcId: !Ref VpcId
+      Tags:
+        - Key: Name
+          Value: !Sub 'copilot-extension-${AppName}-${EnvironmentName}-lb'
+  # Only accept requests coming from the public ALB or other containers in the same security group.
+  EnvironmentSecurityGroup:
+    Metadata:
+      'description': 'A security group to allow your containers to talk to each other'
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: !Join ['', [!Ref AppName, '-', !Ref EnvironmentName, EnvironmentSecurityGroup]]
+      VpcId: !Ref VpcId
+      Tags:
+        - Key: Name
+          Value: !Sub 'copilot-extension-${AppName}-${EnvironmentName}-env'
+  EnvironmentSecurityGroupIngressFromPublicALB:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      Description: Ingress from the public ALB
+      GroupId: !Ref EnvironmentSecurityGroup
+      IpProtocol: -1
+      SourceSecurityGroupId: !Ref PublicLoadBalancerSecurityGroup
+  EnvironmentSecurityGroupIngressFromSelf:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      Description: Ingress from other containers in the same security group
+      GroupId: !Ref EnvironmentSecurityGroup
+      IpProtocol: -1
+      SourceSecurityGroupId: !Ref EnvironmentSecurityGroup  
+  PublicLoadBalancer:
+    Metadata:
+      'description': 'An Application Load Balancer to distribute public traffic to your services'
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Scheme: internet-facing
+      SecurityGroups: [ !GetAtt PublicLoadBalancerSecurityGroup.GroupId ]
+      Subnets: [ !Ref PublicSubnet1, !Ref PublicSubnet2,  ]
+      Type: application
+  # Assign a dummy target group that with no real services as targets, so that we can create
+  # the listeners for the services.
+  DefaultHTTPTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      #  Check if your application is healthy within 20 = 10*2 seconds, compared to 2.5 mins = 30*5 seconds.
+      HealthCheckIntervalSeconds: 10 # Default is 30.
+      HealthyThresholdCount: 2       # Default is 5.
+      HealthCheckTimeoutSeconds: 5
+      HealthCheckPath: /graphqli
+      HealthCheckPort: 80
+      HealthCheckProtocol: HTTP
+      Port: 80
+      Protocol: HTTP
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: 60                  # Default is 300.
+      TargetType: ip
+      VpcId: !Ref VpcId
+  HTTPListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+        - TargetGroupArn: !Ref DefaultHTTPTargetGroup
+          Type: forward
+      LoadBalancerArn: !Ref PublicLoadBalancer
+      Port: 80
+      Protocol: HTTP
