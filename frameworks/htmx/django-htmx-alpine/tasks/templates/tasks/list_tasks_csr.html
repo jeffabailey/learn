@@ -1,0 +1,145 @@
+{{ tasks|json_script:'tasks-json' }}
+
+<script>
+  function tasksCsrComponent() {
+    return {
+      tasks: JSON.parse(
+        JSON.parse(document.querySelector('#tasks-json').textContent)),
+
+      taskCreateCsr(e) {
+        this.tasks.unshift({
+          id: e.detail.id,
+          description: e.detail.description,
+          is_complete: false
+        });
+      },
+      taskUpdateCsr(e) {
+        // get the index of the updated task
+        let index = this.tasks.map((x) => x.id).indexOf(e.detail.id)
+        let updatedTask = this.tasks[index];
+
+        // update the task
+        if (e.detail.is_complete) {
+          updatedTask.is_complete =
+            e.detail.is_complete === 'false' ? false : true;
+        } else if (e.detail.description) {
+          updatedTask.description = e.detail.description;
+        }
+      },
+      taskDeleteCsr(e) {
+        let index = this.tasks.map((x) => x.id).indexOf(e.detail.id)
+        this.tasks.splice(index, 1);
+      },
+
+    };
+  }
+</script>
+
+<div id="tasks"
+     x-data="tasksCsrComponent()"
+     x-init="isCsr = true"
+     @task-create-csr.window="taskCreateCsr"
+     @task-update-csr.window="taskUpdateCsr"
+     @task-delete-csr.window="taskDeleteCsr">
+  <template x-if="tasks.length">
+    <ul id="task-list"
+        class="mx-auto mt-4 box w-max-35rem"
+        data-cy="task-list">
+      <template x-for="(task, index) in tasks" :key="task.id">
+        <li :id="`task-item-${task.id}`"
+            :data-cy="`task-item-${task.id}`"
+            :data-task-id="task.id"
+            class="mx-auto is-flex is-justify-content-space-between
+                   is-align-items-center task-item">
+
+          <!-- task completion checkbox -->
+          <div>
+            <input type="checkbox"
+                   :data-cy="`task-checkbox-is-complete-${task.id}`"
+                   class="mx-3 checkbox is-medium"
+                   autocomplete="off"
+                   :hx-put="taskUrlBuild(baseUrl, 'update', task.id)"
+                   hx-target="body"
+                   hx-swap="beforeend"
+                   :hx-vals='`{
+                     "is_complete": ${!task.is_complete},
+                     "is_csr": true
+                   }`'
+                   hx-trigger="click"
+                   :checked="task.is_complete">
+          </div>
+
+          <!-- task description -->
+          <div x-show="taskUpdateId !== task.id"
+               :id="`task-description-${task.id}`"
+               :data-cy="`task-description-${task.id}`"
+               class="w-max-35rem has-text-centered"
+               :class="{ 'text-strikethrough': task.is_complete,
+                         'has-text-grey-light' : task.is_complete }"
+               :title="`Task ID#: ${task.id}`"
+               x-text="task.description">
+          </div>
+
+          <!-- task update panel -->
+          <div x-show="taskUpdateId === task.id"
+               @keydown.escape="taskUpdatePanelDisable">
+            <form method="post"
+                  @submit.prevent="taskUpdateDescription(task.id)"
+                  :hx-put="taskUrlBuild(baseUrl, 'update', task.id)"
+                  hx-target="body"
+                  hx-swap="beforeend"
+                  hx-vals='{ "is_csr": true }'
+                  :hx-trigger="`task-update-description-form-submit-${task.id}
+                                from:body`">
+              <div class="field has-addons">
+                <span class="control">
+                  <input type="text"
+                         name="description"
+                         :id="`task-update-description-${task.id}`"
+                         :data-cy="`task-update-description-${task.id}`"
+                         :x-ref="`taskUpdateDescription${task.id}`"
+                         x-init="$nextTick(() => { $el.select(); })"
+                         class="input is-small"
+                         :value="task.description">
+                </span>
+                <span class="control">
+                  <input type="submit"
+                         class="button is-small is-info"
+                         :id="`update-confirm-button-${task.id}`"
+                         title="Confirm"
+                         value="&check;"> <!-- confirm icon -->
+                </span>
+                <span class="control">
+                  <button type="button"
+                          class="button is-small is-light border-left"
+                          title="Cancel"
+                          @click="taskUpdatePanelDisable">
+                    &times; <!-- cancel icon -->
+                  </button>
+                </span>
+              </div>
+            </form>
+          </div>
+
+          <!-- task edit/delete icons -->
+          <div class="mr-2 is-size-4 is-flex is-justify-content-center">
+            <button data-cy="`task-icon-edit-${task.id}`"
+                    class="p-2 pt-3 button-unstyled"
+                    title="Edit this task"
+                    @click="taskUpdatePanelToggle(task.id)">
+              &#9998; <!-- edit icon -->
+            </button>
+            <button data-cy="`task-icon-delete-${task.id}`"
+                    class="ml-2 p-2 pt-3 button-unstyled"
+                    tabindex="0"
+                    title="Delete this task"
+                    @click="taskDeleteModalEnable(task.id)">
+              &times; <!-- delete icon -->
+            </button>
+          </div>
+        </li>
+      </template>
+    </ul>
+  </template>
+
+</div>

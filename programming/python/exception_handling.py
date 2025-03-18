@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 def read_file(file_name):
     example_csv = None
     try:

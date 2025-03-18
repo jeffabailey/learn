@@ -1,0 +1,81 @@
+<!-- task completion checkbox -->
+<div>
+  <input type="checkbox" {{ task.is_complete|yesno:'checked,' }}
+         data-cy="task-checkbox-is-complete-{{ task.id|safe }}"
+         class="mx-3 checkbox is-medium"
+         autocomplete="off"
+         hx-put="{% url 'tasks:task_update' task_id=task.id %}"
+         hx-target="#task-item-{{ task.id|safe }}"
+         hx-vals='
+           { "is_complete": "{{ task.is_complete|yesno:"false,true" }}" }'
+         hx-trigger="click">
+</div>
+
+<!-- task description -->
+<div x-show="taskUpdateId !== {{ task.id|safe }}"
+     id="task-description-{{ task.id|safe }}"
+     data-cy="task-description-{{ task.id|safe }}"
+     class="w-max-35rem has-text-centered
+            {% if task.is_complete %}
+              text-strikethrough has-text-grey-light
+            {% endif %}"
+     title="Task ID#: {{ task.id|safe }}">
+  {{ task.description }}
+</div>
+
+<!-- task update panel -->
+<div x-show="taskUpdateId === {{ task.id|safe }}"
+     @keydown.escape="taskUpdatePanelDisable"
+     x-init="$nextTick(() => {
+       $refs.taskUpdateDescription{{ task.id|safe }}.select(); })"
+     x-cloak>
+  <form method="post"
+        @submit.prevent="taskUpdateDescription({{ task.id|safe }})"
+        hx-put="{% url 'tasks:task_update' task_id=task.id %}"
+        hx-target="#task-item-{{ task.id|safe }}"
+        hx-trigger="task-update-description-form-submit-{{ task.id }} from:body">
+    <div class="field has-addons">
+      <span class="control">
+        <input type="text"
+               name="description"
+               id="task-update-description-{{ task.id|safe }}"
+               data-cy="task-update-description-{{ task.id|safe }}"
+               x-ref="taskUpdateDescription{{ task.id|safe }}"
+               class="input is-small"
+               value="{{ task.description }}">
+      </span>
+      <span class="control">
+        <input type="submit"
+               class="button is-small is-info"
+               id="update-confirm-button-{{ task.id|safe }}"
+               title="Confirm"
+               value="&check;"> <!-- confirm icon -->
+      </span>
+      <span class="control">
+        <button type="button"
+                class="button is-small is-light border-left"
+                title="Cancel"
+                @click="taskUpdatePanelDisable">
+          &times; <!-- cancel icon -->
+        </button>
+      </span>
+    </div>
+  </form>
+</div>
+
+<!-- task edit/delete icons -->
+<div class="mr-2 is-size-4 is-flex is-justify-content-center">
+  <button data-cy="task-icon-edit-{{ task.id|safe }}"
+          class="p-2 pt-3 button-unstyled"
+          title="Edit this task"
+          @click="taskUpdatePanelToggle({{ task.id|safe }})">
+    &#9998; <!-- edit icon -->
+  </button>
+  <button data-cy="task-icon-delete-{{ task.id|safe }}"
+          class="ml-2 p-2 pt-3 button-unstyled"
+          tabindex="0"
+          title="Delete this task"
+          @click="taskDeleteModalEnable({{ task.id|safe }})">
+    &times; <!-- delete icon -->
+  </button>
+</div>

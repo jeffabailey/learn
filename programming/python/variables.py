@@ -19,6 +19,8 @@ print(office_name)
 print("\n")
 print("----------------------------------------------")
 
+print("yo")
+
 print(color.BOLD_UNDERLINE + 'Assign an integer value to a variable' + color.END)
 print("\n")
 office_sales = 7

@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "django-htmx-alpine"
+version = "0.1.0"
+description = "A sandbox for using Django with HTMX"
+authors = ["Nicholas Moen <arcanemachine@tutanota.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+Django = "^3.2.2"
+django-simple-captcha = "^0.5.14"
+requests = "^2.25.1"
+gunicorn = "^20.1.0"
+
+[tool.poetry.dev-dependencies]
+beautifulsoup4 = "^4.9.3"
+ipython = "^7.25.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

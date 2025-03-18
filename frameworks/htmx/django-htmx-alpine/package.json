@@ -1,0 +1,32 @@
+{
+  "name": "django-htmx-alpine",
+  "version": "0.0.1",
+  "description": "A sandbox for using Django with HTMX.",
+  "main": "index.js",
+  "scripts": {
+    "jest": "jest -i ./jest/*.js",
+    "jest-watch": "jest ./jest/ --watch",
+    "cypress": "cypress run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arcanemachine/django-htmx-alpine.git"
+  },
+  "author": "Nicholas Moen <arcanemachine@tutanota.com> (https://nicholasmoen.com/)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arcanemachine/django-htmx-alpine/issues"
+  },
+  "homepage": "https://github.com/arcanemachine/django-htmx-alpine#readme",
+  "devDependencies": {
+    "cypress": "^7.6.0",
+    "eslint": "^7.29.0",
+    "jest": "^27.0.5"
+  },
+  "dependencies": {
+    "jsdom": "^16.6.0"
+  },
+  "jest": {
+    "testEnvironment": "jsdom"
+  }
+}
