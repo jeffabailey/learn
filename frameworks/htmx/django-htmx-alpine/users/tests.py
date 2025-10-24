@@ -56,7 +56,7 @@ class UserViewTest(TestCase):
 
     def test_logout_view_accessible(self):
         """Test that logout view is accessible"""
-        response = self.client.get('/users/logout/')
+        response = self.client.post('/users/logout/')
         # Should redirect after logout
         self.assertIn(response.status_code, [200, 302])
 
@@ -90,7 +90,7 @@ class UserAuthenticationTest(TestCase):
     def test_user_logout(self):
         """Test that user can logout"""
         self.client.login(username='testuser', password='testpass123')
-        response = self.client.get('/users/logout/')
+        response = self.client.post('/users/logout/')
         # After logout, user should not be authenticated
         self.assertIn(response.status_code, [200, 302])
 

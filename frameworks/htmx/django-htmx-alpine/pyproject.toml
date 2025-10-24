@@ -1,25 +1,39 @@
-[tool.poetry]
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
 name = "django-htmx-alpine"
 version = "0.1.0"
 description = "A sandbox for using Django with HTMX"
-authors = ["Nicholas Moen <arcanemachine@tutanota.com>"]
-license = "MIT"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Nicholas Moen", email = "arcanemachine@tutanota.com"}
+]
+requires-python = ">=3.8"
+dependencies = [
+    "Django>=3.2.2",
+    "django-simple-captcha>=0.5.14",
+    "requests>=2.25.1",
+    "gunicorn>=20.1.0",
+    "Pillow>=10.0.0",
+]
 
-[tool.poetry.dependencies]
-python = "^3.8"
-Django = "^3.2.2"
-django-simple-captcha = "^0.5.14"
-requests = "^2.25.1"
-gunicorn = "^20.1.0"
-Pillow = "^10.0.0"
+[project.optional-dependencies]
+dev = [
+    "beautifulsoup4>=4.9.3",
+    "ipython>=7.25.0",
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-django>=4.5.0",
+]
 
-[tool.poetry.group.dev.dependencies]
-beautifulsoup4 = "^4.9.3"
-ipython = "^7.25.0"
-pytest = "^7.0.0"
-pytest-cov = "^4.0.0"
-pytest-django = "^4.5.0"
+[tool.setuptools]
+# Django project with apps, not a traditional package
+py-modules = []
 
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+[tool.setuptools.packages.find]
+# Include Django apps
+include = ["todos*", "weather*", "users*", "root*"]
+where = ["."]
