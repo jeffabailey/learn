@@ -26,7 +26,7 @@ This repository uses GitHub Actions to automatically run tests and generate cove
 
 #### Django HTMX Alpine (Python)
 - **Python Version:** 3.10
-- **Dependencies:** Installed via Poetry
+- **Dependencies:** Installed via uv
 - **Tests:** pytest-django with coverage
 - **Coverage:** Uploaded to Codecov with flag `django-python`
 - **Artifacts:** HTML coverage report (30 days retention)
@@ -118,8 +118,8 @@ open htmlcov/index.html
 ### Django HTMX Alpine (Python)
 ```bash
 cd frameworks/htmx/django-htmx-alpine
-poetry install --with dev
-poetry run pytest --cov --cov-report=html
+uv sync --extra dev
+uv run pytest --cov --cov-report=html
 open htmlcov/index.html
 ```
 
