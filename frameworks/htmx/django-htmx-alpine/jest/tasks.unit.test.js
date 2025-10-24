@@ -1,6 +1,6 @@
 /* eslint no-undef: 0 */
 
-const todoListComponent = require('./@/tasks/static/js/tasks.js');
+const todoListComponent = require('../tasks/static/js/tasks.js');
 
 describe('todoListComponent()', () => {
   beforeEach(() => {

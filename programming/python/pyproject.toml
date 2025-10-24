@@ -1,9 +1,13 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
 [project]
-name = "python"
+name = "python-learning"
 version = "0.1.0"
-description = "Add your description here"
+description = "Python learning materials and examples"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.10"
 dependencies = [
     "pandas>=2.2.3",
 ]
@@ -13,3 +17,12 @@ test = [
     "pytest>=8.0.0",
     "pytest-cov>=4.1.0",
 ]
+
+[tool.setuptools]
+# This is a learning project with standalone scripts, not a package
+py-modules = []
+
+[tool.setuptools.packages.find]
+# Don't discover any packages - these are standalone learning scripts
+exclude = ["*"]
+

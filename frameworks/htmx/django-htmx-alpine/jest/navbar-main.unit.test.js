@@ -1,6 +1,6 @@
 /* eslint no-undef: 0 */
 
-const navbarMainComponent = require('./@/static/js/navbar-main.js');
+const navbarMainComponent = require('../static/js/navbar-main.js');
 
 describe('navbarMainComponent()', () => {
   let instance;

@@ -1,2 +1,7 @@
 *out*
 ecs/out/overview/ecs-overview.svg
+
+# Coverage reports
+.coverage
+coverage.lcov
+htmlcov/

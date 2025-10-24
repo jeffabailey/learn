@@ -1,7 +1,7 @@
 /* eslint no-undef: 0 */
 
-const statusMessageComponent = require('./@/static/js/status-message.js');
-// const helpers = require('./@/static/js/helpers.js');
+const statusMessageComponent = require('../static/js/status-message.js');
+// const helpers = require('../static/js/helpers.js');
 
 describe('statusMessageComponent()', () => {
   let instance;
