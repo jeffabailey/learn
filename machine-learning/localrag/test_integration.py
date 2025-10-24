@@ -23,7 +23,7 @@ sys.modules['requests'] = MagicMock()
 sys.modules['requests.auth'] = MagicMock()
 sys.modules['httpx'] = MagicMock()
 
-import numpy as np
+# Import from index after mocking all dependencies
 from index import (
     extract_text_from_pdf,
     generate_embeddings,
