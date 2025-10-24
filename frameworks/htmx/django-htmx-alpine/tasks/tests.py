@@ -91,8 +91,9 @@ class TaskViewTest(TestCase):
         response = self.client.post('/tasks/create/', {
             'description': 'New task'
         })
-        # Should redirect or return error for unauthenticated user
-        self.assertIn(response.status_code, [302, 401, 403])
+        # HTMX returns 204 (No Content) for unauthenticated users
+        # which tells HTMX not to swap any content
+        self.assertEqual(response.status_code, 204)
 
     def test_task_create_authenticated(self):
         """Test creating a task as authenticated user"""
