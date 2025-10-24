@@ -19,8 +19,6 @@ print(office_name)
 print("\n")
 print("----------------------------------------------")
 
-print("yo")
-
 print(color.BOLD_UNDERLINE + 'Assign an integer value to a variable' + color.END)
 print("\n")
 office_sales = 7
@@ -38,7 +36,7 @@ print(f"office_score is type: {office_score_type}")
 print("\n")
 print("----------------------------------------------")
 
-print(color.BOLD_UNDERLINE + 'Assign an boolean value to a variable' + color.END)
+print(color.BOLD_UNDERLINE + 'Assign a boolean value to a variable' + color.END)
 print("\n")
 office_is_active = bool(True)
 office_is_active_type = type(office_is_active)
@@ -49,5 +47,5 @@ print("----------------------------------------------")
 """
 Interesting tidbits
 
-Python employs a concept called name mangling for private variables.abs
+Python employs a concept called name mangling for private variables.
 """
