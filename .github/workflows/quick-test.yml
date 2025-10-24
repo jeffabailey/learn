@@ -78,7 +78,7 @@ jobs:
     steps:
       - name: Check test results
         run: |
-          if [ "${{ needs.quick-python-tests.result }}" = "failure" ] || [ "${{ needs.quick-javascript-tests.result }}" = "failure" ]; then
+          if [ "${{ needs.quick-python-tests.result }}" != "success" ] || [ "${{ needs.quick-javascript-tests.result }}" != "success" ]; then
             echo "❌ Some tests failed"
             exit 1
           else
