@@ -69,16 +69,18 @@ wheels/
 pip-log.txt 
 pip-delete-this-directory.txt 
 
-# Unit test / coverage reports 
-htmlcov/ 
-.tox/ 
-.coverage 
-.coverage.* 
-.cache 
-.pytest_cache/ 
-nosetests.xml 
-coverage.xml 
-*.cover 
+# Unit test / coverage reports
+htmlcov/
+coverage/
+.tox/
+.coverage
+.coverage.*
+coverage.lcov
+.cache
+.pytest_cache/
+nosetests.xml
+coverage.xml
+*.cover
 .hypothesis/ 
 
 # Jupyter Notebook 
