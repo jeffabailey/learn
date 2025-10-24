@@ -24,7 +24,7 @@ describe('navbarMainComponent()', () => {
   test('All variables are false when navbar is instantiated', () => {
     expect(instance.navbarIsActive).toEqual(false);
     expect(instance.loginModalIsActive).toEqual(false);
-    expect(instance.loginModalSubmitButtonIsLoading)
+    expect(instance.loginModalSubmitButtonIsLoading).toEqual(false);
     expect(instance.logoutModalIsActive).toEqual(false);
     expect(instance.registerModalIsActive).toEqual(false);
     expect(instance.registerModalSubmitButtonIsLoading).toEqual(false);

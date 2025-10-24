@@ -7,3 +7,9 @@ requires-python = ">=3.13"
 dependencies = [
     "pandas>=2.2.3",
 ]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8.0.0",
+    "pytest-cov>=4.1.0",
+]

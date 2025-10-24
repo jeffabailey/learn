@@ -194,7 +194,23 @@ describe('todoListComponent()', () => {
     });
 
     it('Selects the description when enabling the update panel', () => {
-      // TODO
+      const mockDescriptionElement = { innerText: 'Test description' };
+      const mockInputElement = {
+        value: '',
+        select: jest.fn()
+      };
+
+      document.querySelector = jest.fn()
+        .mockReturnValueOnce(mockDescriptionElement)  // First call for description text
+        .mockReturnValueOnce(mockInputElement);        // Second call for input element
+
+      // Simulate $nextTick callback execution
+      instance.$nextTick = jest.fn((callback) => callback());
+
+      instance.taskUpdatePanelToggle(id);
+
+      expect(mockInputElement.select).toHaveBeenCalled();
+      expect(mockInputElement.value).toEqual('Test description');
     });
 
 

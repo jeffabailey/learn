@@ -1,0 +1,32 @@
+[run]
+source = .
+omit =
+    */migrations/*
+    */tests/*
+    */test_*.py
+    *_test.py
+    */venv/*
+    */.venv/*
+    */virtualenv/*
+    */site-packages/*
+    manage.py
+    */wsgi.py
+    */asgi.py
+    */admin.py
+    */apps.py
+    */settings.py
+    */__init__.py
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    def __str__
+    if __name__ == .__main__.:
+    raise AssertionError
+    raise NotImplementedError
+    if settings.DEBUG
+    if TYPE_CHECKING
+
+[html]
+directory = htmlcov
