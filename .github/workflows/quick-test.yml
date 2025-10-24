@@ -1,0 +1,90 @@
+name: Quick Tests
+
+on:
+  push:
+    paths:
+      - 'programming/python/**'
+      - 'frameworks/htmx/django-htmx-alpine/**'
+      - 'machine-learning/localrag/**'
+      - '.github/workflows/quick-test.yml'
+  pull_request:
+    paths:
+      - 'programming/python/**'
+      - 'frameworks/htmx/django-htmx-alpine/**'
+      - 'machine-learning/localrag/**'
+
+jobs:
+  quick-python-tests:
+    name: Quick Python Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project:
+          - { name: 'Python Learning', dir: 'programming/python', python: '3.13' }
+          - { name: 'LocalRAG', dir: 'machine-learning/localrag', python: '3.10' }
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.project.python }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.project.python }}
+
+      - name: Install dependencies for ${{ matrix.project.name }}
+        working-directory: ${{ matrix.project.dir }}
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          if [ -f pyproject.toml ]; then pip install -e ".[test]" 2>/dev/null || pip install pytest pytest-cov; fi
+          pip install pytest pytest-cov
+
+      - name: Run tests for ${{ matrix.project.name }}
+        working-directory: ${{ matrix.project.dir }}
+        run: |
+          pytest -v --tb=short
+
+  quick-javascript-tests:
+    name: Quick JavaScript Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: frameworks/htmx/django-htmx-alpine/package-lock.json
+
+      - name: Install dependencies
+        working-directory: frameworks/htmx/django-htmx-alpine
+        run: npm ci
+
+      - name: Run Jest tests
+        working-directory: frameworks/htmx/django-htmx-alpine
+        run: npm run jest
+
+  status-check:
+    name: All Quick Tests Passed
+    runs-on: ubuntu-latest
+    needs: [quick-python-tests, quick-javascript-tests]
+    if: always()
+
+    steps:
+      - name: Check test results
+        run: |
+          if [ "${{ needs.quick-python-tests.result }}" = "failure" ] || [ "${{ needs.quick-javascript-tests.result }}" = "failure" ]; then
+            echo "❌ Some tests failed"
+            exit 1
+          else
+            echo "✅ All quick tests passed"
+          fi
+
+      - name: Post status to summary
+        run: |
+          echo "## Quick Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- Python Tests: ${{ needs.quick-python-tests.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- JavaScript Tests: ${{ needs.quick-javascript-tests.result }}" >> $GITHUB_STEP_SUMMARY

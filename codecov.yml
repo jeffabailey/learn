@@ -1,0 +1,66 @@
+codecov:
+  require_ci_to_pass: yes
+  notify:
+    wait_for_ci: yes
+
+coverage:
+  precision: 2
+  round: down
+  range: "70...100"
+  status:
+    project:
+      default:
+        target: auto
+        threshold: 1%
+        base: auto
+    patch:
+      default:
+        target: 80%
+        threshold: 5%
+
+parsers:
+  gcov:
+    branch_detection:
+      conditional: yes
+      loop: yes
+      method: no
+      macro: no
+
+comment:
+  layout: "reach,diff,flags,tree,footer"
+  behavior: default
+  require_changes: no
+  require_base: no
+  require_head: yes
+
+flags:
+  python-learning:
+    paths:
+      - programming/python/
+    carryforward: true
+
+  django-python:
+    paths:
+      - frameworks/htmx/django-htmx-alpine/
+    carryforward: true
+
+  django-javascript:
+    paths:
+      - frameworks/htmx/django-htmx-alpine/
+    carryforward: true
+
+  localrag:
+    paths:
+      - machine-learning/localrag/
+    carryforward: true
+
+ignore:
+  - "**/*test*.py"
+  - "**/*tests.py"
+  - "**/test_*.py"
+  - "**/migrations/"
+  - "**/node_modules/"
+  - "**/jest/"
+  - "**/cypress/"
+  - "**/*.config.js"
+  - "**/manage.py"
