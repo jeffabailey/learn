@@ -5,7 +5,7 @@ print(f"We have an office array: {offices}")
 print("\n")
 
 print("Accessing array item 0")
-x = offices
+x = offices[0]
 print(f"Found {x}")
 print("\n")
 

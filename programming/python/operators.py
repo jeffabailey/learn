@@ -60,11 +60,11 @@ modulus_and %= 3
 print(f"6 %= {modulus_and}")
 
 exponent_and = 2
-exponent_and *= 3
-print(f"2 *= {exponent_and}")
+exponent_and **= 3
+print(f"2 **= {exponent_and}")
 
 y = 7
 floor_division = 78125.0
 floor_division//=y
-print(f"7 //= {floor_division}")
+print(f"78125.0 //= {floor_division}")
 

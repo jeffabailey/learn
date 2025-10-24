@@ -2,7 +2,7 @@
 
 def file_check(fn):
   try:
-      example_csv = open("example.csv", "r")
+      example_csv = open(fn, "r")
       try:
           print("Found file, printing file")
           print("\n")
