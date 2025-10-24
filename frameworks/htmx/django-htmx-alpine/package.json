@@ -6,6 +6,7 @@
   "scripts": {
     "jest": "jest -i ./jest/*.js",
     "jest-watch": "jest ./jest/ --watch",
+    "jest-coverage": "jest -i ./jest/*.js --coverage",
     "cypress": "cypress run"
   },
   "repository": {
@@ -27,6 +28,23 @@
     "jsdom": "^16.6.0"
   },
   "jest": {
-    "testEnvironment": "jsdom"
+    "testEnvironment": "jsdom",
+    "collectCoverageFrom": [
+      "**/*.js",
+      "!**/node_modules/**",
+      "!**/jest/**",
+      "!**/cypress/**",
+      "!jest.config.js",
+      "!.eslintrc.js"
+    ],
+    "coverageReporters": ["text", "lcov", "html"],
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
+    }
   }
 }
