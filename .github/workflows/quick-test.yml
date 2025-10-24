@@ -35,7 +35,10 @@ jobs:
         working-directory: ${{ matrix.project.dir }}
         run: |
           python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          # Skip requirements.txt for LocalRAG - tests use mocking and don't need heavy ML deps
+          if [ -f requirements.txt ] && [ "${{ matrix.project.name }}" != "LocalRAG" ]; then
+            pip install -r requirements.txt
+          fi
           if [ -f pyproject.toml ]; then pip install -e ".[test]" 2>/dev/null || pip install pytest pytest-cov; fi
           pip install pytest pytest-cov
 
