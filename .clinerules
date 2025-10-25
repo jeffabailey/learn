@@ -1,0 +1,330 @@
+# LLM Instructions for Educational Learning Repository
+
+This repository contains educational learning materials designed for beginners. All AI assistants (Claude, GPT, etc.) MUST follow these strict guidelines to maintain the educational quality and accessibility of this project.
+
+## 🎓 Core Principle: Beginner-First Approach
+
+**CRITICAL**: This is an educational project. Every line of code, every comment, and every test must be understandable by someone learning programming for the first time.
+
+### Code Quality Standards
+
+1. **Write Code for Beginners**
+   - Use clear, descriptive variable names (avoid abbreviations like `tmp`, `ctx`, `cfg`)
+   - Prefer explicit over clever code
+   - Add explanatory comments for ANY concept beyond basic syntax
+   - Break complex operations into smaller, named steps
+   - Avoid advanced language features unless teaching them explicitly
+   - Use simple, linear logic flow when possible
+
+2. **Documentation Requirements**
+   - Every function/method MUST have a docstring explaining:
+     - What it does (in simple terms)
+     - What parameters it takes (with types and examples)
+     - What it returns
+     - Example usage
+   - Every file MUST have a module docstring explaining its purpose
+   - README.md required in each learning folder with:
+     - Clear description of what is being taught
+     - Prerequisites (if any)
+     - How to run the code (step-by-step)
+     - Link to associated blog post
+     - Expected output/results
+
+3. **Example Documentation Style**
+   ```python
+   def calculate_average(numbers):
+       """
+       Calculate the average (mean) of a list of numbers.
+
+       The average is found by adding all numbers together and dividing
+       by how many numbers there are.
+
+       Parameters:
+           numbers (list): A list of numbers (integers or floats)
+                         Example: [1, 2, 3, 4, 5]
+
+       Returns:
+           float: The average of all numbers
+                 Example: 3.0 for input [1, 2, 3, 4, 5]
+
+       Example:
+           >>> calculate_average([10, 20, 30])
+           20.0
+       """
+       total = sum(numbers)  # Add all numbers together
+       count = len(numbers)  # Count how many numbers we have
+       return total / count   # Divide total by count
+   ```
+
+## ✅ Test Coverage Requirements
+
+**MANDATORY**: Aim for 100% test coverage on all code within reason.
+
+### Testing Standards
+
+1. **Coverage Targets**
+   - Strive for 100% code coverage
+   - Minimum acceptable: 95% coverage for educational modules
+   - Every function MUST have at least one test
+   - Every edge case should be tested
+   - Every error condition should be tested
+
+2. **Test Quality**
+   - Tests MUST be readable and serve as examples
+   - Use descriptive test names that explain what is being tested
+   - Format: `test_<function>_<scenario>_<expected_result>`
+   - Example: `test_calculate_average_with_positive_numbers_returns_correct_mean`
+   - Include comments in tests explaining the "why"
+   - Tests should be as simple and clear as the code they test
+
+3. **Test File Organization**
+   - Place tests in the same directory as the code they test
+   - Name test files: `test_<module_name>.py`
+   - For comprehensive learning content: `test_all.py` that runs all tests
+   - Each test file should be runnable independently
+
+4. **Test Documentation**
+   - Each test file MUST have a docstring explaining what is tested
+   - Include examples of running tests in README.md
+   - Document any test dependencies or setup requirements
+
+## 🚀 Execution Simplicity
+
+**CRITICAL**: Code must be trivial to run. Assume the user has minimal technical knowledge.
+
+### Setup Requirements
+
+1. **Minimize Dependencies**
+   - Use standard library when possible
+   - Keep external dependencies to minimum
+   - Document ALL dependencies clearly
+   - Provide lock files (requirements.txt, package-lock.json, etc.)
+
+2. **Clear Run Instructions**
+   - README.md MUST include step-by-step run instructions
+   - Assume no prior knowledge of the tools
+   - Include expected output examples
+   - Document both development and testing commands
+
+3. **Example README Run Section**
+   ```markdown
+   ## How to Run This Code
+
+   ### Prerequisites
+   - Python 3.10 or higher installed
+   - pip (Python package installer)
+
+   ### Setup (First Time Only)
+   1. Open a terminal/command prompt
+   2. Navigate to this folder: `cd programming/python`
+   3. Install dependencies: `pip install -e ".[test]"`
+
+   ### Running the Code
+   ```bash
+   # Run the main program
+   python main.py
+
+   # Run all tests
+   pytest
+
+   # Run tests with coverage report
+   pytest --cov --cov-report=term
+   ```
+
+   ### Expected Output
+   When you run the tests, you should see:
+   ```
+   ========== 15 passed in 0.23s ==========
+   Coverage: 100%
+   ```
+   ```
+
+## 🔒 Self-Contained Learning Modules
+
+**CRITICAL**: Each learning folder must be completely self-contained and single-language.
+
+### Module Organization Rules
+
+1. **Language Isolation**
+   - NEVER mix programming languages in the same learning module
+   - Each folder should teach ONE language or framework
+   - If a concept needs multiple languages, create separate folders
+   - Example structure:
+     ```
+     programming/
+       python/          # Python only
+       javascript/      # JavaScript only
+       go/              # Go only
+     ```
+
+2. **Self-Contained Modules**
+   - Users must be able to clone ONLY one folder and have it work
+   - No dependencies on parent directories (except for CI configuration)
+   - Each module has its own:
+     - Dependencies file (pyproject.toml, package.json, etc.)
+     - README.md with complete instructions
+     - Test suite
+     - All necessary code and resources
+   - Example: Someone should be able to run:
+     ```bash
+     git clone --depth 1 --filter=blob:none --sparse https://github.com/jeffabailey/learn
+     cd learn
+     git sparse-checkout set programming/python
+     cd programming/python
+     pip install -e ".[test]"
+     pytest
+     # Everything works!
+     ```
+
+3. **Resource Management**
+   - If data files are needed, include them in the module
+   - Keep sample data small (< 1MB when possible)
+   - Document any external resources clearly
+   - Provide mock data for testing
+
+## 🔄 CI/CD Requirements
+
+**MANDATORY**: Each learning folder MUST have automated testing via GitHub Actions.
+
+### GitHub Actions Standards
+
+1. **Workflow Configuration**
+   - Add test job to `.github/workflows/test-coverage.yml` for each new module
+   - Each module must have its own job in the workflow
+   - Jobs must run tests and generate coverage reports
+   - Jobs should be named clearly: `<module-name>-tests`
+
+2. **Required CI Checks**
+   - ✅ Run all tests
+   - ✅ Generate coverage report
+   - ✅ Upload coverage to Codecov
+   - ✅ Run linting/style checks (when applicable)
+   - ✅ Check code formatting (when applicable)
+
+3. **Quality Gates**
+   - Tests must pass before merging
+   - Coverage should not decrease
+   - No linting errors allowed
+   - All dependencies must be properly declared
+
+4. **Example Workflow Job Template**
+   ```yaml
+   new-module-tests:
+     name: New Module Name
+     runs-on: ubuntu-latest
+     defaults:
+       run:
+         working-directory: path/to/module
+
+     steps:
+       - uses: actions/checkout@v4
+
+       - name: Set up Python
+         uses: actions/setup-python@v5
+         with:
+           python-version: '3.13'
+           cache: 'pip'
+
+       - name: Install dependencies
+         run: |
+           python -m pip install --upgrade pip
+           pip install -e ".[test]"
+
+       - name: Run tests with coverage
+         run: |
+           pytest --cov --cov-report=xml --cov-report=term
+
+       - name: Upload coverage to Codecov
+         uses: codecov/codecov-action@v4
+         with:
+           file: ./path/to/module/coverage.xml
+           flags: new-module
+           name: new-module-coverage
+         env:
+           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+   ```
+
+## 📋 Checklist for Adding New Learning Content
+
+Before considering any new learning module complete, verify:
+
+- [ ] Code is written with clear, beginner-friendly style
+- [ ] All functions have comprehensive docstrings with examples
+- [ ] Module README.md exists with complete run instructions
+- [ ] Test coverage is at or near 100%
+- [ ] Tests are clear and serve as learning examples
+- [ ] Module is self-contained (can be cloned in isolation)
+- [ ] Only one programming language is used in the module
+- [ ] Dependencies are minimal and clearly documented
+- [ ] GitHub Actions workflow includes this module
+- [ ] All CI checks pass (tests, coverage, linting)
+- [ ] Code can be run by someone with minimal technical knowledge
+- [ ] Expected outputs are documented
+
+## 🚫 Prohibited Practices
+
+**NEVER** do these things in this repository:
+
+1. ❌ Write code that requires deep technical knowledge to understand
+2. ❌ Skip tests or reduce coverage "to save time"
+3. ❌ Mix programming languages in a single learning module
+4. ❌ Create dependencies between learning modules
+5. ❌ Use advanced features without extensive explanation
+6. ❌ Assume prior knowledge beyond the stated prerequisites
+7. ❌ Skip documentation because "the code is self-explanatory"
+8. ❌ Add dependencies without clear justification
+9. ❌ Create code that can't be run with simple commands
+10. ❌ Skip CI/CD setup for new modules
+
+## 💡 Best Practices for AI Assistants
+
+When working on this repository:
+
+1. **Always Ask About Complexity**
+   - If you're about to write something complex, stop
+   - Ask: "Can a beginner understand this?"
+   - If no, simplify or break it down further
+
+2. **Test-First Mindset**
+   - Write tests as you write code
+   - Think: "How would a beginner verify this works?"
+   - Use tests as teaching examples
+
+3. **Documentation is Code**
+   - Treat documentation with same importance as code
+   - Poor documentation is a bug
+   - When in doubt, over-explain
+
+4. **Consistency Matters**
+   - Follow patterns from existing modules
+   - Keep coding style consistent within each language
+   - Match the level of detail in existing documentation
+
+5. **Simplicity Over Cleverness**
+   - Readable > Concise
+   - Obvious > Elegant
+   - Educational > Performant
+   - Remember: This code teaches, it doesn't need to be production-ready
+
+## 🎯 Success Criteria
+
+A learning module is successful when:
+
+1. A complete beginner can understand the code by reading it
+2. Someone can clone just that folder and run it immediately
+3. Tests demonstrate how the code works and show expected behavior
+4. Coverage is near 100% and gives confidence in correctness
+5. CI/CD catches any regressions automatically
+6. The code serves as a reference implementation for the concept
+7. Documentation answers questions before they're asked
+
+## 📚 Additional Resources
+
+- Main README: Project overview and testing guide
+- TEST_COVERAGE_SUMMARY.md: Detailed coverage information
+- .github/workflows/test-coverage.yml: CI/CD configuration
+- Individual module READMEs: Specific learning content details
+
+---
+
+**Remember**: Every commit to this repository is helping someone learn. Make it count. Make it clear. Make it simple.
