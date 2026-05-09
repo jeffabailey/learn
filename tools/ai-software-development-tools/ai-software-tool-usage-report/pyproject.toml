@@ -1,0 +1,17 @@
+[project]
+name = "ai-software-tool-usage-report"
+version = "0.1.0"
+description = "Pulls monthly usage and cost from major AI coding tool vendors and writes a single CSV report."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+    { name = "Jeff Bailey", email = "776901+jeffabailey@users.noreply.github.com" }
+]
+dependencies = [
+    "httpx>=0.27",
+    "python-dotenv>=1.0",
+    "boto3>=1.34",
+]
+
+[tool.uv]
+package = false

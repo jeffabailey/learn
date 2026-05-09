@@ -1,0 +1,3 @@
+[submodule "databases/deltalake/hitchhikers_guide_to_deltalake_streaming"]
+	path = databases/deltalake/hitchhikers_guide_to_deltalake_streaming
+	url = git@github.com:newfront/hitchhikers_guide_to_deltalake_streaming.git
