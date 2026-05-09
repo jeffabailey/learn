@@ -1,7 +1,7 @@
 """OpenAI admin API adapter.
 
 Docs: https://platform.openai.com/docs/api-reference/usage
-The /organization/costs endpoint returns daily cost buckets in USD cents.
+The /organization/costs endpoint returns daily cost buckets in USD.
 The /organization/usage/completions endpoint returns daily token counts.
 """
 from __future__ import annotations
@@ -56,18 +56,22 @@ def _sum_cost(headers: dict[str, str], start: int, end: int) -> float:
     total = 0.0
     page: str | None = None
     while True:
-        params = {"start_time": start, "end_time": end, "bucket_width": "1d", "limit": 31}
+        params: dict[str, object] = {
+            "start_time": start,
+            "end_time": end,
+            "bucket_width": "1d",
+            "limit": 31,
+        }
         if page:
             params["page"] = page
         r = httpx.get(_COSTS_URL, headers=headers, params=params, timeout=60)
         r.raise_for_status()
         body = r.json()
-        for bucket in body.get("data", []):
-            for result in bucket.get("results", []):
-                amount = result.get("amount", {})
-                value = amount.get("value")
-                if value is not None:
-                    total += float(value)
+        for bucket in _safe_list(body.get("data")):
+            for result in _safe_list(bucket.get("results")):
+                amount = _coerce_amount(result.get("amount"))
+                if amount is not None:
+                    total += amount
         if not body.get("has_more"):
             break
         page = body.get("next_page")
@@ -80,19 +84,54 @@ def _sum_tokens(headers: dict[str, str], start: int, end: int) -> int:
     total = 0
     page: str | None = None
     while True:
-        params = {"start_time": start, "end_time": end, "bucket_width": "1d", "limit": 31}
+        params: dict[str, object] = {
+            "start_time": start,
+            "end_time": end,
+            "bucket_width": "1d",
+            "limit": 31,
+        }
         if page:
             params["page"] = page
         r = httpx.get(_USAGE_URL, headers=headers, params=params, timeout=60)
         r.raise_for_status()
         body = r.json()
-        for bucket in body.get("data", []):
-            for result in bucket.get("results", []):
-                total += int(result.get("input_tokens", 0))
-                total += int(result.get("output_tokens", 0))
+        for bucket in _safe_list(body.get("data")):
+            for result in _safe_list(bucket.get("results")):
+                total += _coerce_int(result.get("input_tokens"))
+                total += _coerce_int(result.get("output_tokens"))
         if not body.get("has_more"):
             break
         page = body.get("next_page")
         if not page:
             break
     return total
+
+
+def _safe_list(value: object) -> list[dict]:
+    if not isinstance(value, list):
+        return []
+    return [item for item in value if isinstance(item, dict)]
+
+
+def _coerce_amount(value: object) -> float | None:
+    if value is None:
+        return None
+    if isinstance(value, (int, float)):
+        return float(value)
+    if isinstance(value, str):
+        try:
+            return float(value)
+        except ValueError:
+            return None
+    if isinstance(value, dict):
+        return _coerce_amount(value.get("value"))
+    return None
+
+
+def _coerce_int(value: object) -> int:
+    if value is None:
+        return 0
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return 0

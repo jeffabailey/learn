@@ -49,25 +49,22 @@ def main(argv: list[str] | None = None) -> int:
     output_dir.mkdir(parents=True, exist_ok=True)
     output_path = output_dir / f"ai-tool-usage-{period_start:%Y-%m}.csv"
 
-    rows: list[VendorReport] = []
-    for adapter in ADAPTERS:
-        print(f"  -> {adapter.name} ({adapter.tool})", file=sys.stderr)
-        try:
-            rows.append(adapter.fetch(env, period_start, period_end))
-        except Exception as exc:  # noqa: BLE001 - one vendor's failure should not block the report
-            rows.append(
-                VendorReport.skipped(
-                    adapter.name,
-                    adapter.tool,
-                    f"adapter raised {type(exc).__name__}: {exc}",
-                    period_start,
-                    period_end,
-                )
-            )
+    rows = [_run_adapter(adapter, env, period_start, period_end) for adapter in ADAPTERS]
 
     _write_csv(output_path, rows)
     print(f"wrote {output_path} ({len(rows)} rows)")
     return 0
+
+
+def _run_adapter(adapter, env: dict[str, str], period_start: date, period_end: date) -> VendorReport:
+    """Fetch one vendor's report. A raised exception is downgraded to a SKIPPED
+    row so a single broken adapter doesn't fail the whole run."""
+    print(f"  -> {adapter.name} ({adapter.tool})", file=sys.stderr)
+    try:
+        return adapter.fetch(env, period_start, period_end)
+    except Exception as exc:  # noqa: BLE001 - one vendor's failure should not block the report
+        reason = f"adapter raised {type(exc).__name__}: {exc}"
+        return VendorReport.skipped(adapter.name, adapter.tool, reason, period_start, period_end)
 
 
 def _parse_args(argv: list[str]) -> argparse.Namespace:
@@ -95,20 +92,26 @@ def _write_csv(path: Path, rows: list[VendorReport]) -> None:
         writer = csv.DictWriter(fh, fieldnames=CSV_FIELDS)
         writer.writeheader()
         for row in rows:
-            writer.writerow(
-                {
-                    "vendor": row.vendor,
-                    "tool": row.tool,
-                    "period_start": row.period_start.isoformat(),
-                    "period_end": row.period_end.isoformat(),
-                    "monthly_cost_usd": "" if row.monthly_cost_usd is None else f"{row.monthly_cost_usd:.2f}",
-                    "active_users": "" if row.active_users is None else row.active_users,
-                    "licensed_seats": "" if row.licensed_seats is None else row.licensed_seats,
-                    "tokens_or_requests": "" if row.tokens_or_requests is None else row.tokens_or_requests,
-                    "pricing_model": row.pricing_model,
-                    "notes": row.notes,
-                }
-            )
+            writer.writerow(_render_row(row))
+
+
+def _render_row(row: VendorReport) -> dict[str, object]:
+    return {
+        "vendor": row.vendor,
+        "tool": row.tool,
+        "period_start": row.period_start.isoformat(),
+        "period_end": row.period_end.isoformat(),
+        "monthly_cost_usd": "" if row.monthly_cost_usd is None else f"{row.monthly_cost_usd:.2f}",
+        "active_users": _blank_if_none(row.active_users),
+        "licensed_seats": _blank_if_none(row.licensed_seats),
+        "tokens_or_requests": _blank_if_none(row.tokens_or_requests),
+        "pricing_model": row.pricing_model,
+        "notes": row.notes,
+    }
+
+
+def _blank_if_none(value: object) -> object:
+    return "" if value is None else value
 
 
 if __name__ == "__main__":
