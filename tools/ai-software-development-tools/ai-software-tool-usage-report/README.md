@@ -103,9 +103,26 @@ The adapter pulls **active users** from Cloud Monitoring's `timeSeries.list` RES
 uv run python index.py                  # current month
 uv run python index.py --month 2026-04  # specific calendar month
 uv run python index.py --output ./out   # custom output directory
+uv run python index.py --help           # full CLI help
 ```
 
-The script writes `ai-tool-usage-YYYY-MM.csv` in the chosen directory and prints the path. Vendors with missing keys appear as `SKIPPED` rows so the gap is obvious.
+Per-vendor progress goes to stderr; the final CSV path goes to stdout. You can redirect them independently (for example, `> totals.txt` keeps the path while progress still streams to your terminal):
+
+```text
+  -> Anthropic (Claude API / Claude Code)
+  -> OpenAI (OpenAI API (GPT, o-series))
+  -> GitHub Copilot (Copilot Business / Enterprise)
+  -> Cursor (Cursor for Teams)
+  -> Google (Gemini API)
+  -> AWS (Kiro (Amazon Q Developer))
+wrote ai-tool-usage-2026-05.csv (6 rows)
+```
+
+Vendors with missing keys appear as `SKIPPED` rows so the gap is obvious.
+
+### Sanity-check the totals
+
+The sum of `monthly_cost_usd` across rows should match what your finance team has on file within roughly five percent. A wider gap almost always means a missing row: pilot accounts, marketplace add-ons, or personal API keys that get expensed against a corporate card. Track those down and either add a vendor adapter or paste the cost in manually before trusting the report.
 
 ## CSV columns
 
@@ -114,7 +131,20 @@ vendor, tool, period_start, period_end, monthly_cost_usd,
 active_users, licensed_seats, tokens_or_requests, pricing_model, notes
 ```
 
+* `vendor`, `tool` — vendor name and the specific product line.
+* `period_start`, `period_end` — the calendar month covered (first day, last day).
+* `monthly_cost_usd` — total spend for the month, in USD.
+* `active_users` — distinct users who actually used the tool, where the vendor exposes the count.
+* `licensed_seats` — seats the org is paying for, where the vendor exposes the count.
+* `tokens_or_requests` — token total for token-priced vendors, request total otherwise, where the vendor exposes either.
+* `pricing_model` — one of `token`, `seat`, `hybrid`, or `usage`.
+* `notes` — skip reasons, manual-entry hints, and service-name warnings.
+
 Empty cells mean the vendor does not expose that field (for example, Anthropic does not return seat count, GitHub does not return token count).
+
+### What to look at first
+
+For every row where `pricing_model = seat`, compare `licensed_seats` against `active_users`. A 200-seat license with 60 active users is paying for 140 ghosts; those rows are the easiest cancel-or-resize decisions the report surfaces. For `token` and `usage` rows, focus on `monthly_cost_usd` and `tokens_or_requests` together — a flat cost with falling usage usually means a model upgrade pushed up the per-token rate.
 
 ## Caveats
 

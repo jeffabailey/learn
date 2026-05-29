@@ -1,0 +1,121 @@
+# Subscription Billing ontology, machine-readable form.
+# Companion to ontology.md and to the blog post:
+# https://jeffbailey.us/blog/2026/05/28/how-do-i-create-a-software-ontology
+#
+# This is the "make it queryable" artifact from Step 7. Load it, validate it,
+# diff it in pull requests, or project it into a graph store (nodes = concepts,
+# edges = relationships).
+
+context:
+  name: Subscription Billing
+  owns: Recurring payment. Turns a plan into invoices on a cadence, collects payment, retries failures.
+  does_not_own:
+    - Product catalog (Catalog context)
+    - Customer record (Accounts context)
+    - Support workflows (Support context)
+
+concepts:
+  - term: Subscription
+    classification: entity
+    definition: A recurring agreement for one customer to pay for access to one plan on a fixed cadence.
+  - term: Plan
+    classification: entity
+    definition: The priced offering a subscription is attached to, including its cadence and seat limit.
+  - term: Invoice
+    classification: entity
+    definition: A demand for payment covering exactly one billing period of one subscription.
+  - term: Payment
+    classification: entity
+    definition: A recorded attempt to settle an invoice through a payment method.
+  - term: Coupon
+    classification: entity
+    definition: A named, time-bound reduction applied to a subscription's invoices.
+  - term: Money
+    classification: value_object
+    definition: An amount paired with a currency. Equal when amount and currency match.
+  - term: BillingPeriod
+    classification: value_object
+    definition: The date range an invoice covers, derived from the plan's cadence.
+  - term: Seat
+    classification: value_object
+    definition: One unit of paid access within a subscription, counted rather than individually tracked.
+  - term: LineItem
+    classification: value_object
+    definition: One charge on an invoice, a description plus a Money amount, immutable once issued.
+  - term: PaymentMethod
+    classification: value_object
+    definition: The stored instrument a payment draws from, a reference token plus display metadata.
+  - term: PaymentFailed
+    classification: domain_event
+    definition: A payment attempt did not settle.
+  - term: InvoicePaid
+    classification: domain_event
+    definition: An invoice reached a fully paid state.
+  - term: DunningStarted
+    classification: domain_event
+    definition: Retry-and-notify began for an unpaid invoice.
+  - term: SubscriptionCanceled
+    classification: domain_event
+    definition: A subscription will not renew.
+  - term: Product
+    classification: external_reference
+    owned_by: Catalog
+    definition: The richer catalog concept a Plan is a billing-facing slice of.
+  - term: Customer
+    classification: external_reference
+    owned_by: Accounts
+    definition: The account a subscription belongs to.
+
+aggregates:
+  - root: Subscription
+    contains: [Seat, Coupon]
+    references_by_id: [Plan, Customer]
+    invariant: Active seats never exceed the seat limit of the attached plan.
+  - root: Invoice
+    contains: [LineItem, Payment, BillingPeriod]
+    references_by_id: [Subscription]
+    invariant: Line items sum exactly to the invoice total, and the invoice covers exactly one billing period.
+  - root: Plan
+    contains: [Money, cadence, seat_limit]
+    references_by_id: [Product]
+    invariant: Price is non-negative and the seat limit is at least one.
+
+relationships:
+  - subject: Subscription
+    verb: belongs to
+    object: Customer
+    cardinality: many-to-one
+  - subject: Subscription
+    verb: is attached to
+    object: Plan
+    cardinality: many-to-one
+  - subject: Subscription
+    verb: applies
+    object: Coupon
+    cardinality: many-to-one
+  - subject: Invoice
+    verb: bills
+    object: Subscription
+    cardinality: many-to-one
+  - subject: Invoice
+    verb: contains
+    object: LineItem
+    cardinality: one-to-many
+  - subject: Invoice
+    verb: is settled by
+    object: Payment
+    cardinality: one-to-many
+
+context_map:
+  - upstream: Catalog
+    downstream: Subscription Billing
+    pattern: anti-corruption-layer
+    contract: Catalog supplies Product; Billing translates it into Plan.
+  - upstream: Accounts
+    downstream: Subscription Billing
+    pattern: anti-corruption-layer
+    contract: Accounts supplies Customer; Billing holds it as a reference.
+  - upstream: Subscription Billing
+    downstream: Support
+    pattern: published-language
+    contract: Billing publishes InvoicePaid and PaymentFailed events.
