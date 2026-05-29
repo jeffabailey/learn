@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archimate:model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:archimate="http://www.archimatetool.com/archimate" name="Subscription Billing Ontology" id="id-model-subscription-billing" version="5.0.0">
+  <purpose>Archi-readable model of the Subscription Billing bounded context. Open with Archi (https://www.archimatetool.com/). Contexts are ArchiMate Groupings, concepts are Business Objects, domain events are Business Events. Context-to-context seams use directed Association relationships. Companion to ontology.md, ontology.yaml, and ontology.ttl, and to the blog post https://jeffbailey.us/blog/2026/05/29/how-do-i-create-a-software-ontology. Open the "Subscription Billing" view to see the model laid out.</purpose>
+  <folder name="Business" id="folder-business" type="business">
+    <element xsi:type="archimate:BusinessObject" name="Subscription" id="obj-subscription">
+      <documentation>Entity. A recurring agreement for one customer to pay for access to one plan on a fixed cadence.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessObject" name="Plan" id="obj-plan">
+      <documentation>Entity. The priced offering a subscription is attached to, including its cadence and seat limit.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessObject" name="Invoice" id="obj-invoice">
+      <documentation>Entity. A demand for payment covering exactly one billing period of one subscription.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessObject" name="Payment" id="obj-payment">
+      <documentation>Entity. A recorded attempt to settle an invoice through a payment method.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessObject" name="Coupon" id="obj-coupon">
+      <documentation>Entity. A named, time-bound reduction applied to a subscription's invoices.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessObject" name="Money" id="obj-money">
+      <documentation>Value object. An amount paired with a currency. Equal when amount and currency match.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessObject" name="Billing Period" id="obj-billingperiod">
+      <documentation>Value object. The date range an invoice covers, derived from the plan's cadence.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessObject" name="Seat" id="obj-seat">
+      <documentation>Value object. One unit of paid access within a subscription, counted rather than individually tracked.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessObject" name="Line Item" id="obj-lineitem">
+      <documentation>Value object. One charge on an invoice, a description plus a Money amount, immutable once issued.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessObject" name="Payment Method" id="obj-paymentmethod">
+      <documentation>Value object. The stored instrument a payment draws from, a reference token plus display metadata.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessObject" name="Product" id="obj-product">
+      <documentation>External reference, owned by the Catalog context. The richer catalog concept a Plan is a billing-facing slice of.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessObject" name="Customer" id="obj-customer">
+      <documentation>External reference, owned by the Accounts context. The account a subscription belongs to.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessEvent" name="Invoice Paid" id="evt-invoicepaid">
+      <documentation>Domain event. An invoice reached a fully paid state.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessEvent" name="Payment Failed" id="evt-paymentfailed">
+      <documentation>Domain event. A payment attempt did not settle.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessEvent" name="Dunning Started" id="evt-dunningstarted">
+      <documentation>Domain event. Retry-and-notify began for an unpaid invoice.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessEvent" name="Subscription Canceled" id="evt-subscriptioncanceled">
+      <documentation>Domain event. A subscription will not renew.</documentation>
+    </element>
+  </folder>
+  <folder name="Other" id="folder-other" type="other">
+    <element xsi:type="archimate:Grouping" name="Catalog Context" id="ctx-catalog">
+      <documentation>Upstream neighbor. Owns Product. Supplies it to Billing through an anti-corruption layer.</documentation>
+    </element>
+    <element xsi:type="archimate:Grouping" name="Accounts Context" id="ctx-accounts">
+      <documentation>Upstream neighbor. Owns Customer. Supplies it to Billing through an anti-corruption layer.</documentation>
+    </element>
+    <element xsi:type="archimate:Grouping" name="Subscription Billing Context" id="ctx-billing">
+      <documentation>The bounded context this ontology describes. Owns recurring payment: turning a plan into invoices on a cadence, collecting payment, and retrying failures.</documentation>
+    </element>
+    <element xsi:type="archimate:Grouping" name="Support Context" id="ctx-support">
+      <documentation>Downstream neighbor. Consumes the events Billing publishes.</documentation>
+    </element>
+  </folder>
+  <folder name="Relations" id="folder-relations" type="relations">
+    <element xsi:type="archimate:AssociationRelationship" name="is attached to" id="rel-sub-plan" source="obj-subscription" target="obj-plan" directed="true"/>
+    <element xsi:type="archimate:AssociationRelationship" name="belongs to" id="rel-sub-customer" source="obj-subscription" target="obj-customer" directed="true"/>
+    <element xsi:type="archimate:AssociationRelationship" name="applies" id="rel-sub-coupon" source="obj-subscription" target="obj-coupon" directed="true"/>
+    <element xsi:type="archimate:CompositionRelationship" name="has" id="rel-sub-seat" source="obj-subscription" target="obj-seat"/>
+    <element xsi:type="archimate:AssociationRelationship" name="bills" id="rel-inv-sub" source="obj-invoice" target="obj-subscription" directed="true"/>
+    <element xsi:type="archimate:AggregationRelationship" name="contains" id="rel-inv-lineitem" source="obj-invoice" target="obj-lineitem"/>
+    <element xsi:type="archimate:AggregationRelationship" name="is settled by" id="rel-inv-payment" source="obj-invoice" target="obj-payment"/>
+    <element xsi:type="archimate:AssociationRelationship" name="covers" id="rel-inv-period" source="obj-invoice" target="obj-billingperiod" directed="true"/>
+    <element xsi:type="archimate:AssociationRelationship" name="references" id="rel-plan-product" source="obj-plan" target="obj-product" directed="true"/>
+    <element xsi:type="archimate:AssociationRelationship" name="draws from" id="rel-payment-method" source="obj-payment" target="obj-paymentmethod" directed="true"/>
+    <element xsi:type="archimate:AggregationRelationship" id="rel-ctx-sub" source="ctx-billing" target="obj-subscription"/>
+    <element xsi:type="archimate:AggregationRelationship" id="rel-ctx-plan" source="ctx-billing" target="obj-plan"/>
+    <element xsi:type="archimate:AggregationRelationship" id="rel-ctx-inv" source="ctx-billing" target="obj-invoice"/>
+    <element xsi:type="archimate:AggregationRelationship" id="rel-ctx-payment" source="ctx-billing" target="obj-payment"/>
+    <element xsi:type="archimate:AggregationRelationship" id="rel-ctx-coupon" source="ctx-billing" target="obj-coupon"/>
+    <element xsi:type="archimate:AggregationRelationship" id="rel-ctx-invoicepaid" source="ctx-billing" target="evt-invoicepaid"/>
+    <element xsi:type="archimate:AggregationRelationship" id="rel-ctx-paymentfailed" source="ctx-billing" target="evt-paymentfailed"/>
+    <element xsi:type="archimate:AggregationRelationship" id="rel-cat-product" source="ctx-catalog" target="obj-product"/>
+    <element xsi:type="archimate:AggregationRelationship" id="rel-acc-customer" source="ctx-accounts" target="obj-customer"/>
+    <element xsi:type="archimate:AssociationRelationship" name="supplies Product via ACL" id="rel-cat-billing" source="ctx-catalog" target="ctx-billing" directed="true"/>
+    <element xsi:type="archimate:AssociationRelationship" name="supplies Customer via ACL" id="rel-acc-billing" source="ctx-accounts" target="ctx-billing" directed="true"/>
+    <element xsi:type="archimate:AssociationRelationship" name="publishes events" id="rel-billing-support" source="ctx-billing" target="ctx-support" directed="true"/>
+  </folder>
+  <folder name="Views" id="folder-views" type="diagrams">
+    <element xsi:type="archimate:ArchimateDiagramModel" name="Subscription Billing" id="view-subscription-billing">
+      <child xsi:type="archimate:DiagramObject" id="do-ctx-catalog" archimateElement="ctx-catalog">
+        <bounds x="40" y="30" width="170" height="70"/>
+        <sourceConnection xsi:type="archimate:Connection" id="con-rel-cat-product" source="do-ctx-catalog" target="do-obj-product" archimateRelationship="rel-cat-product"/>
+        <sourceConnection xsi:type="archimate:Connection" id="con-rel-cat-billing" source="do-ctx-catalog" target="do-ctx-billing" archimateRelationship="rel-cat-billing"/>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="do-ctx-accounts" archimateElement="ctx-accounts">
+        <bounds x="250" y="30" width="170" height="70"/>
+        <sourceConnection xsi:type="archimate:Connection" id="con-rel-acc-customer" source="do-ctx-accounts" target="do-obj-customer" archimateRelationship="rel-acc-customer"/>
+        <sourceConnection xsi:type="archimate:Connection" id="con-rel-acc-billing" source="do-ctx-accounts" target="do-ctx-billing" archimateRelationship="rel-acc-billing"/>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="do-ctx-billing" targetConnections="con-rel-cat-billing con-rel-acc-billing" archimateElement="ctx-billing">
+        <bounds x="470" y="30" width="170" height="70"/>
+        <sourceConnection xsi:type="archimate:Connection" id="con-rel-ctx-sub" source="do-ctx-billing" target="do-obj-subscription" archimateRelationship="rel-ctx-sub"/>
+        <sourceConnection xsi:type="archimate:Connection" id="con-rel-ctx-plan" source="do-ctx-billing" target="do-obj-plan" archimateRelationship="rel-ctx-plan"/>
+        <sourceConnection xsi:type="archimate:Connection" id="con-rel-ctx-inv" source="do-ctx-billing" target="do-obj-invoice" archimateRelationship="rel-ctx-inv"/>
+        <sourceConnection xsi:type="archimate:Connection" id="con-rel-ctx-payment" source="do-ctx-billing" target="do-obj-payment" archimateRelationship="rel-ctx-payment"/>
+        <sourceConnection xsi:type="archimate:Connection" id="con-rel-ctx-coupon" source="do-ctx-billing" target="do-obj-coupon" archimateRelationship="rel-ctx-coupon"/>
+        <sourceConnection xsi:type="archimate:Connection" id="con-rel-ctx-invoicepaid" source="do-ctx-billing" target="do-evt-invoicepaid" archimateRelationship="rel-ctx-invoicepaid"/>
+        <sourceConnection xsi:type="archimate:Connection" id="con-rel-ctx-paymentfailed" source="do-ctx-billing" target="do-evt-paymentfailed" archimateRelationship="rel-ctx-paymentfailed"/>
+        <sourceConnection xsi:type="archimate:Connection" id="con-rel-billing-support" source="do-ctx-billing" target="do-ctx-support" archimateRelationship="rel-billing-support"/>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="do-ctx-support" targetConnections="con-rel-billing-support" archimateElement="ctx-support">
+        <bounds x="700" y="30" width="170" height="70"/>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="do-obj-subscription" targetConnections="con-rel-inv-sub con-rel-ctx-sub" archimateElement="obj-subscription">
+        <bounds x="40" y="170" width="150" height="55"/>
+        <sourceConnection xsi:type="archimate:Connection" id="con-rel-sub-plan" source="do-obj-subscription" target="do-obj-plan" archimateRelationship="rel-sub-plan"/>
+        <sourceConnection xsi:type="archimate:Connection" id="con-rel-sub-customer" source="do-obj-subscription" target="do-obj-customer" archimateRelationship="rel-sub-customer"/>
+        <sourceConnection xsi:type="archimate:Connection" id="con-rel-sub-coupon" source="do-obj-subscription" target="do-obj-coupon" archimateRelationship="rel-sub-coupon"/>
+        <sourceConnection xsi:type="archimate:Connection" id="con-rel-sub-seat" source="do-obj-subscription" target="do-obj-seat" archimateRelationship="rel-sub-seat"/>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="do-obj-plan" targetConnections="con-rel-sub-plan con-rel-ctx-plan" archimateElement="obj-plan">
+        <bounds x="250" y="170" width="150" height="55"/>
+        <sourceConnection xsi:type="archimate:Connection" id="con-rel-plan-product" source="do-obj-plan" target="do-obj-product" archimateRelationship="rel-plan-product"/>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="do-obj-invoice" targetConnections="con-rel-ctx-inv" archimateElement="obj-invoice">
+        <bounds x="460" y="170" width="150" height="55"/>
+        <sourceConnection xsi:type="archimate:Connection" id="con-rel-inv-sub" source="do-obj-invoice" target="do-obj-subscription" archimateRelationship="rel-inv-sub"/>
+        <sourceConnection xsi:type="archimate:Connection" id="con-rel-inv-lineitem" source="do-obj-invoice" target="do-obj-lineitem" archimateRelationship="rel-inv-lineitem"/>
+        <sourceConnection xsi:type="archimate:Connection" id="con-rel-inv-payment" source="do-obj-invoice" target="do-obj-payment" archimateRelationship="rel-inv-payment"/>
+        <sourceConnection xsi:type="archimate:Connection" id="con-rel-inv-period" source="do-obj-invoice" target="do-obj-billingperiod" archimateRelationship="rel-inv-period"/>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="do-obj-payment" targetConnections="con-rel-inv-payment con-rel-ctx-payment" archimateElement="obj-payment">
+        <bounds x="670" y="170" width="150" height="55"/>
+        <sourceConnection xsi:type="archimate:Connection" id="con-rel-payment-method" source="do-obj-payment" target="do-obj-paymentmethod" archimateRelationship="rel-payment-method"/>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="do-obj-coupon" targetConnections="con-rel-sub-coupon con-rel-ctx-coupon" archimateElement="obj-coupon">
+        <bounds x="40" y="270" width="150" height="55"/>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="do-obj-money" archimateElement="obj-money">
+        <bounds x="250" y="270" width="150" height="55"/>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="do-obj-billingperiod" targetConnections="con-rel-inv-period" archimateElement="obj-billingperiod">
+        <bounds x="460" y="270" width="150" height="55"/>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="do-obj-seat" targetConnections="con-rel-sub-seat" archimateElement="obj-seat">
+        <bounds x="670" y="270" width="150" height="55"/>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="do-obj-lineitem" targetConnections="con-rel-inv-lineitem" archimateElement="obj-lineitem">
+        <bounds x="40" y="370" width="150" height="55"/>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="do-obj-paymentmethod" targetConnections="con-rel-payment-method" archimateElement="obj-paymentmethod">
+        <bounds x="250" y="370" width="150" height="55"/>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="do-obj-product" targetConnections="con-rel-plan-product con-rel-cat-product" archimateElement="obj-product">
+        <bounds x="460" y="370" width="150" height="55"/>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="do-obj-customer" targetConnections="con-rel-sub-customer con-rel-acc-customer" archimateElement="obj-customer">
+        <bounds x="670" y="370" width="150" height="55"/>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="do-evt-invoicepaid" targetConnections="con-rel-ctx-invoicepaid" archimateElement="evt-invoicepaid">
+        <bounds x="40" y="470" width="150" height="55"/>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="do-evt-paymentfailed" targetConnections="con-rel-ctx-paymentfailed" archimateElement="evt-paymentfailed">
+        <bounds x="250" y="470" width="150" height="55"/>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="do-evt-dunningstarted" archimateElement="evt-dunningstarted">
+        <bounds x="460" y="470" width="150" height="55"/>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="do-evt-subscriptioncanceled" archimateElement="evt-subscriptioncanceled">
+        <bounds x="670" y="470" width="150" height="55"/>
+      </child>
+    </element>
+  </folder>
+</archimate:model>

@@ -1,0 +1,199 @@
+# Subscription Billing ontology, OWL form (Turtle).
+#
+# Protege-readable. Open it with File > Open in Protege (https://protege.stanford.edu/),
+# or load it with any RDF/OWL toolkit. This is the same model as ontology.md and
+# ontology.yaml, expressed as OWL classes, a classification hierarchy, and object
+# properties with domains, ranges, and a few invariant restrictions.
+#
+# Companion to: https://jeffbailey.us/blog/2026/05/28/how-do-i-create-a-software-ontology
+
+@prefix :     <https://jeffbailey.us/ontology/subscription-billing#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+<https://jeffbailey.us/ontology/subscription-billing>
+    a owl:Ontology ;
+    rdfs:label "Subscription Billing Ontology" ;
+    rdfs:comment "An agreed-upon model of the Subscription Billing bounded context: concepts, their classification, and the relationships between them." .
+
+#################################################################
+# Classification (DDD building blocks as superclasses)
+#################################################################
+
+:Entity a owl:Class ;
+    rdfs:label "Entity" ;
+    rdfs:comment "A concept with a distinct identity that persists through change." .
+
+:ValueObject a owl:Class ;
+    rdfs:label "Value Object" ;
+    rdfs:comment "A concept defined entirely by its attributes, immutable, interchangeable when equal." .
+
+:DomainEvent a owl:Class ;
+    rdfs:label "Domain Event" ;
+    rdfs:comment "Something that happened in the domain and that the model records." .
+
+:ExternalReference a owl:Class ;
+    rdfs:label "External Reference" ;
+    rdfs:comment "A concept owned by a neighboring bounded context, referenced here by identity across an anti-corruption layer." .
+
+:Entity owl:disjointWith :ValueObject .
+
+#################################################################
+# Entities
+#################################################################
+
+:Subscription a owl:Class ;
+    rdfs:subClassOf :Entity ;
+    rdfs:label "Subscription" ;
+    rdfs:comment "A recurring agreement for one customer to pay for access to one plan on a fixed cadence." .
+
+:Plan a owl:Class ;
+    rdfs:subClassOf :Entity ;
+    rdfs:label "Plan" ;
+    rdfs:comment "The priced offering a subscription is attached to, including its cadence and seat limit." .
+
+:Invoice a owl:Class ;
+    rdfs:subClassOf :Entity ;
+    rdfs:label "Invoice" ;
+    rdfs:comment "A demand for payment covering exactly one billing period of one subscription." .
+
+:Payment a owl:Class ;
+    rdfs:subClassOf :Entity ;
+    rdfs:label "Payment" ;
+    rdfs:comment "A recorded attempt to settle an invoice through a payment method." .
+
+:Coupon a owl:Class ;
+    rdfs:subClassOf :Entity ;
+    rdfs:label "Coupon" ;
+    rdfs:comment "A named, time-bound reduction applied to a subscription's invoices." .
+
+#################################################################
+# Value objects
+#################################################################
+
+:Money a owl:Class ;
+    rdfs:subClassOf :ValueObject ;
+    rdfs:label "Money" ;
+    rdfs:comment "An amount paired with a currency. Equal when amount and currency match." .
+
+:BillingPeriod a owl:Class ;
+    rdfs:subClassOf :ValueObject ;
+    rdfs:label "Billing Period" ;
+    rdfs:comment "The date range an invoice covers, derived from the plan's cadence." .
+
+:Seat a owl:Class ;
+    rdfs:subClassOf :ValueObject ;
+    rdfs:label "Seat" ;
+    rdfs:comment "One unit of paid access within a subscription, counted rather than individually tracked." .
+
+:LineItem a owl:Class ;
+    rdfs:subClassOf :ValueObject ;
+    rdfs:label "Line Item" ;
+    rdfs:comment "One charge on an invoice, a description plus a Money amount, immutable once issued." .
+
+:PaymentMethod a owl:Class ;
+    rdfs:subClassOf :ValueObject ;
+    rdfs:label "Payment Method" ;
+    rdfs:comment "The stored instrument a payment draws from, a reference token plus display metadata." .
+
+#################################################################
+# Domain events
+#################################################################
+
+:PaymentFailed a owl:Class ;
+    rdfs:subClassOf :DomainEvent ;
+    rdfs:label "Payment Failed" ;
+    rdfs:comment "A payment attempt did not settle." .
+
+:InvoicePaid a owl:Class ;
+    rdfs:subClassOf :DomainEvent ;
+    rdfs:label "Invoice Paid" ;
+    rdfs:comment "An invoice reached a fully paid state." .
+
+:DunningStarted a owl:Class ;
+    rdfs:subClassOf :DomainEvent ;
+    rdfs:label "Dunning Started" ;
+    rdfs:comment "Retry-and-notify began for an unpaid invoice." .
+
+:SubscriptionCanceled a owl:Class ;
+    rdfs:subClassOf :DomainEvent ;
+    rdfs:label "Subscription Canceled" ;
+    rdfs:comment "A subscription will not renew." .
+
+#################################################################
+# External references (owned by neighboring contexts)
+#################################################################
+
+:Product a owl:Class ;
+    rdfs:subClassOf :ExternalReference ;
+    rdfs:label "Product" ;
+    rdfs:comment "The richer catalog concept a Plan is a billing-facing slice of. Owned by the Catalog context." .
+
+:Customer a owl:Class ;
+    rdfs:subClassOf :ExternalReference ;
+    rdfs:label "Customer" ;
+    rdfs:comment "The account a subscription belongs to. Owned by the Accounts context." .
+
+#################################################################
+# Object properties (relationships)
+#################################################################
+
+:isAttachedTo a owl:ObjectProperty ;
+    rdfs:domain :Subscription ;
+    rdfs:range :Plan ;
+    rdfs:label "is attached to" .
+
+:belongsTo a owl:ObjectProperty ;
+    rdfs:domain :Subscription ;
+    rdfs:range :Customer ;
+    rdfs:label "belongs to" .
+
+:applies a owl:ObjectProperty ;
+    rdfs:domain :Subscription ;
+    rdfs:range :Coupon ;
+    rdfs:label "applies" .
+
+:bills a owl:ObjectProperty ;
+    rdfs:domain :Invoice ;
+    rdfs:range :Subscription ;
+    rdfs:label "bills" .
+
+:contains a owl:ObjectProperty ;
+    rdfs:domain :Invoice ;
+    rdfs:range :LineItem ;
+    rdfs:label "contains" .
+
+:isSettledBy a owl:ObjectProperty ;
+    rdfs:domain :Invoice ;
+    rdfs:range :Payment ;
+    rdfs:label "is settled by" .
+
+:covers a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:domain :Invoice ;
+    rdfs:range :BillingPeriod ;
+    rdfs:label "covers" .
+
+:references a owl:ObjectProperty ;
+    rdfs:domain :Plan ;
+    rdfs:range :Product ;
+    rdfs:label "references" .
+
+#################################################################
+# Invariants expressed as class restrictions
+#################################################################
+
+# An invoice covers exactly one billing period.
+:Invoice rdfs:subClassOf [
+    a owl:Restriction ;
+    owl:onProperty :covers ;
+    owl:cardinality "1"^^xsd:nonNegativeInteger
+] .
+
+# A subscription is attached to exactly one plan.
+:Subscription rdfs:subClassOf [
+    a owl:Restriction ;
+    owl:onProperty :isAttachedTo ;
+    owl:cardinality "1"^^xsd:nonNegativeInteger
+] .
