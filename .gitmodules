@@ -1,3 +1,6 @@
 [submodule "databases/deltalake/hitchhikers_guide_to_deltalake_streaming"]
 	path = databases/deltalake/hitchhikers_guide_to_deltalake_streaming
 	url = git@github.com:newfront/hitchhikers_guide_to_deltalake_streaming.git
+[submodule "machine-learning/ML-From-Scratch"]
+	path = machine-learning/ML-From-Scratch
+	url = git@github.com:eriklindernoren/ML-From-Scratch.git

@@ -1,0 +1,1 @@
+memberSearchIndex = [{"p":"<Unnamed>","c":"ArrayManipulation","l":"ArrayManipulation()","u":"%3Cinit%3E()"},{"p":"<Unnamed>","c":"ArrayManipulation","l":"containsNumberPairWithSum(int[], int)","u":"containsNumberPairWithSum(int[],int)"}];updateSearchResults();
