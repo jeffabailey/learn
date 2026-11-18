@@ -187,11 +187,79 @@ jobs:
           path: machine-learning/localrag/htmlcov/
           retention-days: 30
 
+  # Agent Harness (Go)
+  harness-tests:
+    name: Agent Harness (Go ${{ matrix.go }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # 1.22 is the oldest version the tutorial supports; stable catches new breakage.
+        go: ['1.22', 'stable']
+    defaults:
+      run:
+        working-directory: ai-agents/harness
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go }}
+          cache: false # standard library only, so there is nothing to cache
+
+      - name: Check formatting
+        run: |
+          unformatted=$(gofmt -l .)
+          if [ -n "$unformatted" ]; then
+            echo "Run gofmt -w on these files:"
+            echo "$unformatted"
+            exit 1
+          fi
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Run tests with coverage
+        run: go test -race -covermode=atomic -coverprofile=coverage.out ./...
+
+      - name: Build every step for macOS, Linux, and Windows
+        run: |
+          for target in darwin/arm64 linux/amd64 linux/arm64 windows/amd64; do
+            for step in steps/*/; do
+              GOOS=${target%/*} GOARCH=${target#*/} go build -o /dev/null "./$step"
+            done
+          done
+
+      - name: Upload coverage to Codecov
+        if: matrix.go == 'stable'
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./ai-agents/harness/coverage.out
+          flags: harness
+          name: harness-coverage
+          fail_ci_if_error: false
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Create HTML coverage report
+        if: matrix.go == 'stable'
+        run: go tool cover -html=coverage.out -o coverage.html
+
+      - name: Archive coverage report
+        if: matrix.go == 'stable'
+        uses: actions/upload-artifact@v4
+        with:
+          name: harness-coverage
+          path: ai-agents/harness/coverage.html
+          retention-days: 30
+
   # Generate Coverage Summary
   coverage-summary:
     name: Coverage Summary
     runs-on: ubuntu-latest
-    needs: [python-learning-tests, django-python-tests, django-javascript-tests, localrag-tests]
+    needs: [python-learning-tests, django-python-tests, django-javascript-tests, localrag-tests, harness-tests]
     if: always()
 
     steps:
@@ -211,6 +279,7 @@ jobs:
           echo "- ✅ Django HTMX Alpine (Python)" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ Django HTMX Alpine (JavaScript)" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ LocalRAG ML Project" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Agent Harness (Go)" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Coverage Reports" >> $GITHUB_STEP_SUMMARY
           echo "Coverage reports are available as artifacts on this workflow run." >> $GITHUB_STEP_SUMMARY

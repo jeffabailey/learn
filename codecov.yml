@@ -54,10 +54,16 @@ flags:
       - machine-learning/localrag/
     carryforward: true
 
+  harness:
+    paths:
+      - ai-agents/harness/
+    carryforward: true
+
 ignore:
   - "**/*test*.py"
   - "**/*tests.py"
   - "**/test_*.py"
+  - "**/*_test.go"
   - "**/migrations/"
   - "**/node_modules/"
   - "**/jest/"

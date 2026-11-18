@@ -230,7 +230,8 @@ open coverage/index.html
 | Django HTMX (Python) | Python | 2 | 21 | pytest-django, pytest-cov |
 | Django HTMX (JS) | JavaScript | 3 | 30+ | Jest |
 | LocalRAG | Python | 1 | 13 | pytest, pytest-cov |
-| **Total** | - | **7** | **84+** | - |
+| Agent Harness | Go | 3 | 13 | go test -cover |
+| **Total** | - | **10** | **97+** | - |
 
 ---
 
@@ -246,6 +247,12 @@ cd frameworks/htmx/django-htmx-alpine && pytest --cov
 
 # LocalRAG tests
 cd machine-learning/localrag && pytest --cov
+```
+
+### Go Tests:
+```bash
+# Agent harness (tests use a fake model server, so Ollama is not needed)
+cd ai-agents/harness && go test -race -cover ./...
 ```
 
 ### JavaScript Tests:

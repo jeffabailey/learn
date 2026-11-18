@@ -1,0 +1,6 @@
+/harness
+/harness.exe
+/harness-*
+.harness-session.json
+coverage.out
+coverage.html

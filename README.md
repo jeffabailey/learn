@@ -34,6 +34,9 @@ cd frameworks/htmx/django-htmx-alpine && npm run jest-coverage
 
 # LocalRAG ML Project
 cd machine-learning/localrag && pytest --cov
+
+# Agent Harness (Go)
+cd ai-agents/harness && go test -race -cover ./...
 ```
 
 # All Blog Post Categories
